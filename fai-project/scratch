@@ -1,5 +1,0 @@
-$switchprivate="Private 192.168.33.0/24"
-    Set-VMFirmware -VMName "alpine2" -EnableSecureBoot Off -BootOrder $vmNetworkAdapter, $vmHardDiskDrive
-    $vmNetworkAdapter = get-VMNetworkAdapter -VMName "alpine2" | where{$_.SwitchName -eq $switchprivate}
-    $vmHardDiskDrive = get-VMHardDiskDrive -VMName "alpine2" -ControllerType SCSI   -ControllerLocation 0
-	 Set-VMFirmware -VMName "alpine2" -EnableSecureBoot Off -BootOrder $vmNetworkAdapter, $vmHardDiskDrive
