@@ -34,7 +34,7 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
 ## Next step
 
-We will proceed with the DHCP server installation 
+We will proceed with the DNS server installation 
 
 Please continue with 
 # [101-faiserver-server-setup.md](./101-faiserver-server-setup.md)

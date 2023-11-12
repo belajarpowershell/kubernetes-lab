@@ -2,7 +2,7 @@
 
 ## Initial Alpine OS setup
 
-#### Key information
+## Key information
 ```
 Alpine Default login
 login : root
@@ -16,7 +16,7 @@ password : blank
 ![alt text](./screenshots/Alpine1-screenshots/Alpine-boot-from-alpine-install-iso.png)
 
 
-#### Disable IPv6 on Alpine 
+## Disable IPv6 on Alpine 
 In my setup IPv6 was not workinging if you have issues with IPv6, do disable before proceeding.
 
  Edit the /etc/sysctl.conf
@@ -48,7 +48,7 @@ Network :
 eth0: [dhcp]  # Internet connection
 eth1: [192.168.100.1/24]
 gateway: [none]
-password : [abc123]
+password : [123]
 DNS Servers :
 Timezone :[Singpore]
 Proxy :[none]
@@ -81,44 +81,24 @@ installation complete type reboot [enter]
 These are the credentials for newly installed alpine1 . 
 ```
 login: root
-pass: abc123
+pass: 123
 ```
 This screen will appear , take note of the login prompt **'alpine1'**. Indicating the installation is completed.
 
 ![alt text](./screenshots/Alpine1-screenshots/vmconnect_odjAAmfYDN.png)
 ## Connect via ssh
 If you don't already know the Hyper-V console is not able to perform copy and paste operations. Via a terminal connection copy and paste functions make it easier to paste commands , especially the long ones.
-
-## Steps to ssh.
-- Identify the IP address  type `ip a` at the prompt.
-![alt text](./screenshots/Alpine1-screenshots/alpine-get-ip-address.png)
-
-- Use a terminal client. Putty is a good terminal to use. Windows 11 as a Terminal client installed I will be trying that in this example.But any terminal program can be used.
-
-eth1 : 192.168.100.1 # This IP is accesible from your Hyper-V host.
- you may have to setup a static IP on the Network interface .
- in my case I used 192.168.100.10/24
- On Windows go to :
- 
- Control Panel\Network and Internet\Network Connections
- 
- Look for Connection name : vEthernet (Private 192.168.100.0 24)
- assign the static IP  192.168.100.10, Subnet Mask 255.255.255.0 
-
- 
-Back to ssh from Windows terminal
-```
-ssh -l root 192.168.100.1
-```
-![alt text](./screenshots/Alpine1-screenshots/WindowsTerminal_ssh-alpine1.png)
+At this time the Hyper-V host does not have an IP in the `Private Subnet 192.168.100.0/24` . We cannot test the SSH at this time.
+We can test this when DHCP is setup later on.
 
 
-### Setup and ssh to server validated
+
+## Alpine OS install completed 
 
 
 ## Next step
 
-We will proceed to setup alpine1 as a Router 
+We will proceed to setup alpine1 as a DHCP server 
 
 Please continue with 
 # [101-faiserver-server-setup.md](./101-faiserver-server-setup.md)

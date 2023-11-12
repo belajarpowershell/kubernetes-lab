@@ -6,19 +6,16 @@
 # Install bind ( DNS server) and tools dig and nslookup on alpine1.
 apk add bind bind-tools
 
-
-# start bind service. ( the service name is 'named') 
-
-rc-service named restart 
-
 # check if the tools are installed.
 dig -v
 nslookup -v
-
 ```
 
 Configure bind with a zone and resolve internet names from the configured forwarders.
 ```
+# create named.conf file.
+touch /etc/bind/named.conf
+#edit named.conf file 
 vi /etc/bind/named.conf
 # replace or edit the file to reflect the following.
 
@@ -42,6 +39,8 @@ zone "k8s.lab" IN {
 Create the zone file. In this lab the domain used is k8s.lab
 
 ```
+mkdir - p /etc/bind/master/ && touch /etc/bind/master/k8s.lab
+
 vi /etc/bind/master/k8s.lab
 # paste following 
 $TTL 38400
@@ -67,7 +66,7 @@ worker3         IN      A       192.168.100.207
 
 Validate the bind configuration
 ```
-named-checkconf /etc/named.conf
+named-checkconf /etc/bind/named.conf
 
 # (re)start bind service. ( the service name is 'named') 
 

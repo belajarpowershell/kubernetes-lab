@@ -61,21 +61,21 @@ if (!(Test-Path -Path "$DVDUBUNTU")) {
 $switchInternet="internet" 
 
 ## this subnet is used for this example this is a label so any other subnet can be used for the VM's.
-$switchprivate="Private 192.168.33.0/24" 
+$switchprivate="Private 192.168.100.0/24" 
 
 ##
 
 ### Creates new private network.
 
 $existingSwitch = Get-VMSwitch -Name $switchprivate -SwitchType Internal -ErrorAction SilentlyContinue
-if ($existingSwitch -eq "$null") {
-    New-VMSwitch -Name $switchprivate -SwitchType Internal -Notes "created for Fai-project Network "
+if ($existingSwitch.name -eq $null) {
+    New-VMSwitch -Name $switchprivate -SwitchType Internal -Notes "created for k8s-lab project "
 } else {
     Write-Host "The switch '$switchprivate' already exists."
 }
 
-<#
-$hostnamelist=("k8s-alpineLB").Split(",")
+
+$hostnamelist=("k8s-alpine1,k8s-loadbalancer").Split(",")
 #get-vm | Remove-VM -Confirm $false
 
 foreach ($vmname in $hostnamelist){
@@ -93,7 +93,7 @@ foreach ($vmname in $hostnamelist){
         
 
 
-        if ($vmname -eq "alpinek8s") {
+        if ($vmname -eq "k8s-alpine1") {
             # Connect to HyperV Switch connected to External network.
             connect-VMNetworkAdapter -VMName $vmname  -SwitchName $switchInternet
             # add new NIC for Private Network
@@ -108,7 +108,7 @@ foreach ($vmname in $hostnamelist){
         }
         # Turn off Secure Boot to simplify setup and set boot order  ( for generation 2 VM type)
         #Set-VMFirmware $vmname -BootOrder  $(get-VMDvdDrive  $vmname), $(get-VMHardDiskDrive $vmname | where {$_.ControllerLocation -eq "0"})  -EnableSecureBoot Off
-        if ($vmname -neq "alpine1") {
+        if ($vmname -ne "k8s") {
             Set-VMFirmware $vmname -BootOrder  $(get-VMDvdDrive  $vmname), $(get-VMHardDiskDrive $vmname | Where-Object{$_.ControllerLocation -eq "0"})  -EnableSecureBoot Off
         } else {
             Set-VMFirmware "$vmname" -EnableSecureBoot Off -BootOrder $vmNetworkAdapter, $vmHardDiskDrive
@@ -150,7 +150,7 @@ foreach ($vmname in $hostnamelist){
 }
 
 
-$hostnamelist=("k8s-worker1,k8s-worker2,k8s-worker3,singlenode").Split(",")
+$hostnamelist=("k8s-worker1,k8s-worker2,k8s-worker3").Split(",")
 
 foreach ($vmname in $hostnamelist){
         $vmfolder = "$workingfolder\VirtualMachines\"
@@ -178,7 +178,7 @@ foreach ($vmname in $hostnamelist){
 
         Set-VMFirmware "$vmname" -EnableSecureBoot Off -BootOrder $vmNetworkAdapter, $vmHardDiskDrive
 }
-#>
+
 $hostnamelist=("k8s-xsinglenode").Split(",")
 
 foreach ($vmname in $hostnamelist){
