@@ -111,7 +111,7 @@ su -l
 #### Change the hostname
 
 ```
-echo "faiserver" |  tee  /etc/hostname
+echo "faisvr" |  tee  /etc/hostname
 ```
 
 #### create user fai
@@ -121,8 +121,22 @@ usermod -aG sudo fai
 
 ```
 
+allow root login remotely
+```
+vi /etc/ssh/sshd_configvi /etc/ssh/sshd_config
+#update following row
+PermitRootLogin yes
 
+systemctl status sshd
+systemctl restart sshd
+```
+# fix up down arrow in vi
+```
+vi ~/.vimrc
+set nocompatible
+echo "set nocompatible" |  tee -a ~/.vimrc
 
+```
 We are now done with the faiserver setup, we will move on to the faiserver Application setup.
 
 Move on to 

@@ -1,0 +1,112 @@
+ssh 
+
+login demo 
+pswd fai
+
+##
+eth1 mgmt
+/etc/network/interfaces.d/eth0
+auto eth1
+iface eth1 inet dhcp
+
+ifup eth0
+ifdown eth1
+
+
+auto eth0
+iface eth0 inet static
+    address 192.168.1.250
+    netmask 255.255.255.0
+    gateway 192.168.1.2
+##
+systemctl restart networking
+ rc-service dhcpd restart
+ rc-service networking restart
+
+disable ipv6
+vi /etc/sysctl.conf
+
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+
+sysctl -p
+
+Install the package fai-quickstart on your install server.
+
+wget -O fai-project.gpg https://fai-project.org/download/2BF8D9FE074BCDE4.gpg
+cp fai-project.gpg /etc/apt/trusted.gpg.d/
+echo "deb http://fai-project.org/download buster koeln" > /etc/apt/sources.list.d/fai.list
+apt-get update
+apt install fai-quickstart
+
+
+#########
+Create the nfsroot
+
+sed -i -e 's/^#deb/deb/' /etc/fai/apt/sources.list
+sed -i -e 's/#LOGUSER/LOGUSER/' /etc/fai/fai.conf
+
+fai-setup -v
+
+Creating the configuration space
+
+fai-mk-configspace
+
+#########
+root@faiserver:~# cat /usr/share/doc/fai-doc/examples/etc/dhcpd.conf
+# dhcpd.conf for a fai installation server
+# replace faiserver with the name of your install server
+
+deny unknown-clients;
+option dhcp-max-message-size 2048;
+use-host-decl-names on;
+#always-reply-rfc1048 on;
+
+subnet 192.168.33.0 netmask 255.255.255.0 {
+   option routers 192.168.33.250;
+   option domain-name "fai";
+   option domain-name-servers 192.168.33.250;
+   option time-servers faiserver;
+   option ntp-servers faiserver;
+   server-name faiserver;
+   next-server faiserver;
+   if substring(option vendor-class-identifier, 0, 20) = "PXEClient:Arch:00000" {
+         filename "fai/pxelinux.0";
+   }
+   if substring(option vendor-class-identifier, 0, 20) = "PXEClient:Arch:00007" {
+         filename "fai/syslinux.efi";
+   }
+}
+
+# generate a lot of entries with:
+# perl -e 'for (1..10) {printf "host client%02s {hardware ethernet 52:54:00:11:23:%02X;fixed-address client%02s;}\n",$_,$_,$_;}'
+# then replace  52:54:00:11:23:XX with the hardware addresses of your clients
+# 52:54:00:11:23 is a prefix used by fai-kvm
+######################
+Creating the PXELINUX configuratio
+
+fai-chboot -IFv -u nfs://faiserver/srv/fai/config demohost
+
+Booting kernel vmlinuz-4.19.0-5-amd64
+ append initrd=initrd.img-4.19.0-5-amd64 ip=dhcp
+   FAI_FLAGS=verbose,sshd,createvt FAI_CONFIG_SRC=nfs://192.168.33.250/srv/fai/config
+   FAI_FLAGS=verbose,sshd,createvt FAI_CONFIG_SRC=nfs://faiserver/srv/fai/config
+
+demohost has 192.168.33.100 in hex C0A82164
+Writing file /srv/tftp/fai/pxelinux.cfg/C0A82164 for demohost
+
+default fai-generated
+
+label fai-generated
+kernel vmlinuz-4.19.0-5-amd64
+append initrd=initrd.img-4.19.0-5-amd64 ip=dhcp root=/srv/fai/nfsroot:vers=3 rootovl FAI_FLAGS=verbose,sshd,createvt FAI_CONFIG_SRC=nfs://faiserver/srv/fai/config FAI_ACTION=install
+
+default fai-generated
+
+label fai-generated
+kernel vmlinuz-6.1.0-13-amd64
+append initrd=initrd.img-6.1.0-13-amd64 ip=dhcp root=/srv/fai/nfsroot:vers=3 rootovl FAI_FLAGS=verbose,sshd,createvt FAI_CONFIG_SRC=nfs://192.168.33.250/srv/fai/config FAI_ACTION=install
+
+
+See /usr/

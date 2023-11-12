@@ -44,7 +44,7 @@ subnet 192.168.33.0 netmask 255.255.255.0 {
    }
    if substring(option vendor-class-identifier, 0, 20) = "PXEClient:Arch:00007" {
          filename "fai/syslinux.efi";
-   }append initrd=initrd.img-6.1.0-13-amd64 ip=dhcp root=/srv/fai/nfsroot:vers=3 rootovl FAI_FLAGS=verbose,sshd,createvt FAI_CONFIG_SRC=nfs://192.168.33.250/srv/fai/config FAI_ACTION=install
+   }
    #assign IP based on MAC address
    host faisvr {
         hardware ethernet 00:15:5d:00:8a:3d; # change to your MAC address. 
