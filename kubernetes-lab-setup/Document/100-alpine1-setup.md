@@ -17,7 +17,8 @@ password : blank
 
 
 ## Disable IPv6 on Alpine 
-In my setup IPv6 was not workinging if you have issues with IPv6, do disable before proceeding.
+In my setup IPv6 was not working.When downloading files IPv6 was used and delayed/errored out.
+If you have issues with IPv6, do disable before proceeding. 
 
  Edit the /etc/sysctl.conf
 
@@ -82,6 +83,7 @@ These are the credentials for newly installed alpine1 .
 ```
 login: root
 pass: 123
+#in this lab all passwords will be set with 123
 ```
 This screen will appear , take note of the login prompt **'alpine1'**. Indicating the installation is completed.
 
@@ -101,4 +103,4 @@ We can test this when DHCP is setup later on.
 We will proceed to setup alpine1 as a DHCP server 
 
 Please continue with 
-# [101-faiserver-server-setup.md](./101-faiserver-server-setup.md)
+# [101-alpine1-setup-DHCP-server](./101-alpine1-setup-DHCP-server.md)

@@ -57,29 +57,29 @@ cp  /srv/isoubuntu/casper/initrd /srv/tftp/ubuntu/casper
 Apart from the Linux boot files, we also need to have the boot files for pxelinux to function.
 
 #### Syslinux requires the following files 
-*** Backgroud***
+**Backgroud**
 
 BIOS is for older Computers. The newer computers work with EFI.
 This was confusing initialy as the SYSLINUX files actually have versions specific to BIOS , EFI32 EFI64. 
 In HyperV when you create a VM you are given a choice of Generation 1 or Generation 2. 
 If you selected Generation 1 then you need to use the BIOS version.
-In this lab Generation 2 was selected. the BIOS version is stated here to provide this fact that could have saved me a lot of time.
+In this lab Generation 2 was selected. the BIOS version is stated here to provide this fact. This could have saved me a lot of time.
 
 
-***BIOS Core files***
+**BIOS Core files**
 
 ```
 pxelinux.0
 ldlinux.c32
 ```
-***Basic Menu***
+**Basic Menu**
 These files are required if you want to have a menu selection.
 If you don't have multple Boot options to present these files are not needed.
 ```
 menu.c32
 libutil.c32
 ```
-***Graphics Menu***
+**Graphics Menu**
 These files are required if you want to have a menu selection but with better graphics where you can have png file as a backgroud.
 If you don't have multple Boot options to present these files are not needed.
 
@@ -88,19 +88,19 @@ vesamenu.c32
 libcom32.c32
 ```
 
-***EFI64 Core files***
+**EFI64 Core files**
 ```
 ldlinux.e64
 syslinux.efi
 ```
-***Basic Menu***
+**Basic Menu**
 These files are required if you want to have a menu selection.
 If you don't have multple Boot options to present these files are not needed.
 ```
 menu.c32
 libutil.c32
 ```
-***Graphics Menu***
+**Graphics Menu**
 These files are required if you want to have a menu selection but with better graphics where you can have png file as a backgroud.
 If you don't have multple Boot options to present these files are not needed.
 
@@ -113,46 +113,22 @@ libcom32.c32
 
 Step 1 Download syslinux
 
-[SYSLINUX ver 6.03](https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/6.xx/syslinux-6.03.zip)
+[SYSLINUX ver 6.03 from the official site](https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/6.xx/syslinux-6.03.zip)
+
+To extract the relevant files can be quite an effort to explain, I have compiled the required files.
+
+[syslinux-6.04-pre1-PXE-specific.tar](./syslinux-files/syslinux-6.04-pre1-PXE-specific.tar)
+
+### Boot Menu configuration 
 
 
+Once we have the files in place, we can now prepare the Syslinux Boot Menu.
 
-
-
-
-
-
-----
-
-[syslinux files with PXE boot menu enabled](https://www.rodsbooks.com/efi-bootloaders/syslinux-6.0.3+dfsg-14.t)
-
-Copy following files from 
-
-``` 
-syslinux-6.03\efi64\com32\menu\menu.c32
-syslinux-6.03\efi64\com32\libutil\libutil.c32
-```
-sss
-
-for vesamenu
-```
-iso\syslinux-6.03\efi64\efi\syslinux.efi
-iso\syslinux-6.03\efi64\com32\elflink\ldlinux\ldlinux.e64
-syslinux-6.03\bios\com32\elflink\ldlinux\ldlinux.c32
-syslinux-6.03\efi64\com32\menu\vesamenu.c32
-syslinux-6.03\efi64\com32\lib\libcom32.c32
-```
-
-
-[syslinux 6.03 zip](https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/6.xx/)
-
-
-
-## Update pxelinux.cfg/default 
+#### Update pxelinux.cfg/default 
 
 ```
-path splash/
-path c32/
+vi /srv/tftp/efi64/pxelinux.cfg/default
+
 DEFAULT ubuntu
 TIMEOUT 50
 UI vesamenu.c32
@@ -160,10 +136,6 @@ MENU RESOLUTION 1024 768
 MENU BACKGROUND splash/pine-green-splash.png
 MENU TITLE PXE Boot Menu
 
-LABEL fai-server
-    MENU LABEL fai-server
-    kernel vmlinuz-6.1.0-13-amd64
-    append initrd=initrd.img-6.1.0-13-amd64 ip=dhcp root=/srv/fai/nfsroot:vers=3 rootovl FAI_FLAGS=verbose,sshd,createvt FAI_CONFIG_SRC=nfs://192.168.33.250/srv/fai/config FAI_ACTION=install
 
 #working ISO downloaded and installer started and user-data found. 12 November 2023s
 LABEL ubuntu

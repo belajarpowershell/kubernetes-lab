@@ -1,10 +1,17 @@
 # `alpine1` setup and configuration.
 
 ## Configure DNS server
+# Install bind ( DNS server) and tools dig and nslookup on alpine1.
+DNS resolves Names to IP addresses. Kubetnetes will need the DNS to be closer to a production setup. Hence the requirement. This service can be skipped , but then all the connectivity will be via IP alone.
+
+In this lab we will setup `bind` as the DNS server application.
 
 ```
-# Install bind ( DNS server) and tools dig and nslookup on alpine1.
+#install bind
 apk add bind bind-tools
+
+# set named to start at boot
+rc-update add named default
 
 # check if the tools are installed.
 dig -v
@@ -15,8 +22,10 @@ Configure bind with a zone and resolve internet names from the configured forwar
 ```
 # create named.conf file.
 touch /etc/bind/named.conf
+
 #edit named.conf file 
 vi /etc/bind/named.conf
+
 # replace or edit the file to reflect the following.
 
 options {
@@ -33,14 +42,14 @@ zone "k8s.lab" IN {
         type master;
         file "/etc/bind/master/k8s.lab";
 };
+```
+Next, we create the zone file. In this lab the zone name  is `k8s.lab`
 
 ```
-
-Create the zone file. In this lab the domain used is k8s.lab
-
-```
+# create folder and file
 mkdir - p /etc/bind/master/ && touch /etc/bind/master/k8s.lab
 
+# edit the file 
 vi /etc/bind/master/k8s.lab
 # paste following 
 $TTL 38400
@@ -66,20 +75,29 @@ worker3         IN      A       192.168.100.207
 
 Validate the bind configuration
 ```
+# check if the formating is correct 
 named-checkconf /etc/bind/named.conf
 
 # (re)start bind service. ( the service name is 'named') 
-
 rc-service named restart 
 
 # ensure no errors are returned
 ```
 
-
 Validate DNS.
 
 ```
 To validate you need to run nslookup on a remote server. 
-As there are no servers setup, this can be validated when the VM's are created.
+As there are no other servers setup, this can be validated when the VM's are created.
 
 ```
+### Setup `alpine1` server DNS is complete.
+
+
+## Next step
+
+We will proceed with the nginx server installation 
+
+Please continue with 
+# [104-alpine1-setup-nginx](./104-alpine1-setup-nginx.md)
+

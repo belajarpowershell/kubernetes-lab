@@ -1,0 +1,10 @@
+VMName,NetworkSwitch1,NetworkSwitch2,DiskSizeGB1,DiskSizeGB2,CPUCount,MemoryGB,ISOPath,BootOrder
+ak8s-alpine1,ExternalNetwork,Private,50,,1,1,"$DVDalpine",DVD,SCSI
+ak8s-loadbalancer,,Private,50,,1,1,"$DVDalpine",DVD,SCSI
+ak8s-master1,,Private,50,30,1,1,"$DVDUBUNTU",DVD,SCSI
+ak8s-master2,,Private,50,30,1,1,"$DVDUBUNTU",Private,SCSI
+ak8s-master3,,Private,50,30,1,1,"$DVDUBUNTU",Private,SCSI
+ak8s-worker1,,Private,50,30,1,1,"$DVDUBUNTU",Private,SCSI
+ak8s-worker2,,Private,50,30,1,1,"$DVDUBUNTU",Private,SCSI
+ak8s-worker3,,Private,50,30,1,1,"$DVDUBUNTU",Private,SCSI
+ak8s-xsinglenode,,Private,50,30,1,1,"$DVDUBUNTU",Private,SCSI

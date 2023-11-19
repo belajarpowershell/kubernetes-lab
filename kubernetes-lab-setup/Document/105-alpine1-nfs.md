@@ -1,0 +1,42 @@
+# `alpine1` setup and configuration.
+
+## Install and Configure `nfs`
+
+`nfs` functions as a remote Hard Disk. If you need to access files locally but are stored on a remote server shared using `nfs` then this `nfs` will behave as its a Hard Disk setup locally.
+
+We do have use cases for `nfs` so lets set this up. 
+
+```
+#install nfs 
+apk update
+apk add nfs-utils
+
+# set nfs to start at boot
+rc-update add nfs
+
+# check status
+rc-service nfs status
+
+#nfs configuration 
+# update file with the entry below.
+vi /etc/exports
+
+/srv/isoubuntu 192.168.100.1/24(async,ro,no_subtree_check,no_root_squash)
+
+# refresh the nfs with the updated row.
+
+exportfs -a -v 
+
+```
+
+### Setup `alpine1` `nfs` is complete.
+
+
+## Next step
+
+We will proceed with the tftp server installation 
+
+Please continue with 
+# [106-alpine1-tftp](./106-alpine1-tftp.md)
+
+

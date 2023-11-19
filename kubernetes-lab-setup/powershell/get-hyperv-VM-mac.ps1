@@ -28,3 +28,24 @@ foreach ($vm in $vms) {
 
     Write-Host "----------------------"
 }
+
+foreach ($vm in $vms) {
+    # Get MAC address of the first network adapter
+    $macAddress = $vm | Get-VMNetworkAdapter | Select-Object -First 1 | Select-Object -ExpandProperty MacAddress
+
+    # Remove "k8s-" prefix from the VM name
+    $vmName = $vm.Name -replace '^k8s-', ''
+
+    # Format DHCP configuration with MAC address in XX:XX:XX:XX:XX:XX format
+    $formattedMacAddress = ($macAddress -replace '(.{2})(.{2})(.{2})(.{2})(.{2})(.{2})', '$1:$2:$3:$4:$5:$6')
+    $dhcpConfig = @"
+host $vmName {
+    hardware ethernet $formattedMacAddress;
+    fixed-address 192.168.100.250;
+    option host-name "$vmName";
+}
+"@
+
+    # Output DHCP configuration
+    Write-Host $dhcpConfig
+}

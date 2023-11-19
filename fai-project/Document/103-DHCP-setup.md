@@ -94,4 +94,18 @@ default fai-generated
 label fai-generated
 kernel vmlinuz-6.1.0-13-amd64
 append initrd=initrd.img-6.1.0-13-amd64 ip=dhcp root=/srv/fai/nfsroot:vers=3 rootovl FAI_FLAGS=verbose,sshd,createvt FAI_CONFIG_SRC=nfs://192.168.33.250/srv/fai/config FAI_ACTION=install
+
+
+#working ISO downloaded and installer started and user-data found. 12 November 2023s
+LABEL ubuntu
+    MENU LABEL ubuntu
+    KERNEL http://192.168.33.250/tftp/fai/ubuntu/casper/vmlinuz
+    INITRD http://192.168.33.250/tftp/fai/ubuntu/casper/initrd
+    append url=http://192.168.33.250/ubuntu-iso-mnt/ubuntu-20.04.6-live-server-amd64.iso cloud-config-url=/dev/null ip=dhcp fsck.mode=skip ---
+	
+	#working 
+	append url=http://192.168.33.250/ubuntu-iso-mnt/ubuntu-20.04.6-live-server-amd64.iso autoinstall ds=nocloud-net;s=http://192.168.33.250/fai/autoinstalldata/ ip=dhcp fsck.mode=skip ---
+```
+
+
 ```

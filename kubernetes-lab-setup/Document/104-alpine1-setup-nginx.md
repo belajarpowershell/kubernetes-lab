@@ -1,6 +1,7 @@
 # `alpine1` setup and configuration.
 
 ## Install and Configure nginx
+A webserver is handy for several reasons. In this Lab we will use a webserver for quite a bit of stuff. Lets set up `nginx` for this purpose.
 
 ```
 #install nginx 
@@ -17,19 +18,15 @@ rc-service nginx status
 rc-service nginx start
 
 
-#Nginx configuration
+#nginx configuration
 # no change required in this lab setup
 vi /etc/nginx/nginx.conf
 ```
-
-
-
 
 Configure a new site to list the files over http.
 ```
 # nginx installs with a default site 
 # this site will intefere with the new site we are setting up.
-
 # remove default site
 rm /etc/nginx/http.d/default.conf
 
@@ -55,23 +52,39 @@ Check nginx config after every change for errors
 ```
 #check syntax 
 nginx -t
+
 #reload nginx
 rc-service nginx restart 
 ``` 
+Logs
+You can check the files accessed via url, this way you can validate if the correct paths are in place.
 
+```
+cat /var/log/nginx/access.log
+```
 
 Validate 
 
-
 ```
 # create a file to be listed
-mkdir -p /srv/installfileserver/ && touch /srv/installfileserver/test.txt
-
+mkdir -p /srv/autoinstall/ && touch /srv/autoinstall/test.txt
 
 #In a browser open the following URL
 https://192.168.100.1
 
-The list of files hosted in `/srv/installfileserver/` will be listed.
+The list of files hosted in `/srv/autoinstall/` will be listed.
 ```
 Here is and example
-![alt text](./screenshots/Alpine1-screenshots/browser-list-files.png)
+![alt text](./screenshots/Alpine1-screenshots/browser-list-files-update.png)
+
+### Setup `alpine1` server `nginx` is complete.
+
+
+## Next step
+
+We will proceed with the nfs server installation 
+
+Please continue with 
+# [105-alpine1-nfs](./105-alpine1-nfs.md)
+
+

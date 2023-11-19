@@ -38,32 +38,52 @@ subnet 192.168.100.0 netmask 255.255.255.0 {
 To refresh the updated configuration restart the DHCP services.
 Any errors in configuration will appear at this point.
 ```
+# set dhcpd to start at boot
+rc-update add dhcpd default
+
 # start the dhcpd service.
 rc-service dhcpd start
+
+# Check the dhcpd service status.
+rc-service dhcpd status
+
 ```
 DHCP logs
+Later you may need to check if the IP addresses are assigned etc.
+These to files will be key for your troubleshooting.
 ```
-cat /var/lib/dhcp/dhcpd.leases
-
 cat /etc/dhcp/dhcpd.conf
+cat /var/lib/dhcp/dhcpd.leases
 ```
 
 ## DHCP Setup is complete  for alpine1 server .
 
 ## Steps to ssh.
 
-Since the DHCP is now setup the Hyper-V host can now get and IP assigned.
-You can do this by running from Windows Terminal ( run as Administrator).
+If using DHCP, the gateway is also assigned to my Hyper-V host nic.
+THis caused some network issues where my connection to the internet kept timing out. When I set the IP address without the Gateway the network issues were no longer present. 
+So better to set the IP address manualy then obtain via DHCP.
+
+Paste the following Powershell code int Windows Terminal as Administrator.
 
 ```
-ipconfig /renew 
+$ifindex=(Get-NetAdapter | Where-Object { $_.Name -like "*192.168.100.0*" }).InterfaceIndex
+New-NetIPAddress -InterfaceIndex $ifindex -IPAddress 192.168.100.2 -PrefixLength 24
+Get-DnsClient -InterfaceIndex $ifindex | Set-DnsClientServerAddress -ServerAddresses ("192.168.100.1")
+
 ```
+Validate
+
 Run this command on Windows Terminal to check if an IP has been assigned
 ```
 
 get-netipaddress -InterfaceIndex (Get-NetAdapter | Where-Object { $_.Name -like "*192.168.100.0*" }).InterfaceIndex
 ```
 ![alt text](./screenshots/Alpine1-screenshots/WindowsTerminal_checkIP.png)
+
+Troubleshooting.
+- check if the DHCP server is running.
+- If that is working, then review the IP address ranges assigned to ensure they are correct and check for typos in the IP address.
 
 ## How to identify the IP address on a linux machine?
 At the prompt type.
@@ -83,8 +103,11 @@ But any terminal program can be used.
 Back to ssh from Windows terminal
 I will peform further configuration from the Windows Terminal as I will be able to copy and paste commands.
 
+From Windows Terminal type the following command. You will be presented with a login request.
+
 ```
 ssh -l root 192.168.100.1
+Password : `123` # if the proposed Password was used
 ```
 ![alt text](./screenshots/Alpine1-screenshots/WindowsTerminal_ssh-alpine1.png)
 
@@ -98,4 +121,4 @@ We will proceed with the router installation.
 The validation for DHCP and Internet on the private network will be tested at a later stage.
 
 Please continue with 
-# [101-faiserver-server-setup.md](./101-faiserver-server-setup.md)
+# [102-alpine1-setup-router](./102-alpine1-setup-router.md)
