@@ -1,0 +1,66 @@
+alpine:
+  hosts:
+    alpine1:
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+
+singlenode:
+  hosts:
+    single:
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+      ansible_host: 192.168.100.199
+      kubernetes_cluster_name: k3s-single-lab-01
+singleu:
+  hosts:
+    singleubuntu:
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+      ansible_host: 192.168.100.198
+      kubernetes_cluster_name: k3s-single-lab-02
+lb:
+  hosts:
+    loadbalancer:
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+      ansible_host: 192.168.100.200
+      kubernetes_cluster_name: k3s-ha-lab-01
+master:
+  hosts:
+    master1:
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+      ansible_host: 192.168.100.201  # Replace with the actual IP
+      kubernetes_cluster_name: k3s-ha-lab-01
+
+masterchild:
+  hosts:
+    master2:
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+      ansible_host: 192.168.100.202  # Replace with the actual IP
+      kubernetes_cluster_name: k3s-ha-lab-01
+    master3:
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+      ansible_host: 192.168.100.203  # Replace with the actual IP
+      kubernetes_cluster_name: k3s-ha-lab-01
+
+worker:
+  hosts:
+    worker1:
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+      ansible_host: 192.168.100.204  # Replace with the actual IP
+      kubernetes_cluster_name: k3s-ha-lab-01
+    worker2:
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+      ansible_host: 192.168.100.205  # Replace with the actual IP
+      kubernetes_cluster_name: k3s-ha-lab-01
+    worker3:
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+      ansible_host: 192.168.100.206  # Replace with the actual IP
+      kubernetes_cluster_name: k3s-ha-lab-01
+

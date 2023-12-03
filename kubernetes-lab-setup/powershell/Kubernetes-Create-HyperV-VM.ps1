@@ -1,38 +1,10 @@
-﻿# PowerShell Script 
-# Script: Create-HyperVVM.ps1
-# Description: Script to create Hyper-V VMs based on configurations in a CSV file
-# Author: Suresh Solomon ( sureshsolomon@yahoo.com)
-# Date: November 15, 2023
-
-<#
-Disclaimer:
-This script is provided as-is without any warranty. Use it at your own risk.
-The author and contributors are not responsible for any damages or data loss caused by the script.
-Please review and understand the script before execution. Make sure to backup your data and test the script in a non-production environment.
-
-Usage:
-1. Set the execution policy to RemoteSigned before running the script.
-2. Modify the CSV file (vms.csv) with your VM configurations.
-3. Run the script to create Hyper-V VMs based on the provided configurations.
-
-#>
-
-# create working folder
+﻿# create working folder
 # this script will default to  F:\kubernetes-project-lab
-# To change this path search for 'F:\kubernetes-project-lab' replace with the path 
-# There is only one location to change under # create working folder
 # Change the Drive letter to on that exists on your computer,
-# You will also need to  update External Network name  for $switchInternet="internet"
-##  Hyper-V > Virtual Switch Manager > Identify the External Switch name
-
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
 <#
-This script will read from a file called vms.csv
-Copy the content below and paste in a file vms.csv 
-Feel free to edite the VM name to your preference
-
-
 example content of "vms.csv"
+You can change the VM name
 VMName,NetworkSwitch1,NetworkSwitch2,DiskSizeGB1,DiskSizeGB2,CPUCount,MemoryGB,ISOPath,BootOrder
 aaa-alpine1,Internet,"Private 192.168.100.0/24",50,,1,1,alpine-standard-3.18.4-x86_64.iso,DVD
 aaa-loadbalancer,,"Private 192.168.100.0/24",50,,1,1,alpine-standard-3.18.4-x86_64.iso,DVD
@@ -46,7 +18,7 @@ aaa-worker3,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd
 aaa-xsinglenode,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
 
 ##
-NetworkSwitch1 : this is the internet connection . Please change internet to the name of your external Network on Hyper-V
+NetworkSwitch1 : this is the internet connection
 NetworkSwitch2 : this is the private network "Private 192.168.100.0/24"
 ISOPath : if there is a DVD loaded the iso name is listed here.
 BootOrder : 
@@ -66,8 +38,8 @@ $vms = Import-Csv -Path $csvPath
 
 # create working folder
 #this is where the Hyper-V files will be created.
-# this script will default to  F:\kubernetes-project-lab
-$workingfolder = "F:\kubernetes-project-lab"
+# this script will default to  G:\kubernetes-project-lab
+$workingfolder = "G:\kubernetes-project-lab"
 if (!(Test-Path -Path "$workingfolder" -PathType Container)) {
         New-Item -Path "$workingfolder" -ItemType Directory
     }
@@ -102,16 +74,17 @@ if (!(Test-Path -Path "$DVDUBUNTU")) {
 
 ## change the name to the switch that has access to the internet.
 ##  Hyper-V > Virtual Switch Manager > Identify the Switch names
-
 $switchInternet="internet" 
-
 
 ## this subnet is used for this example this is a label so any other subnet can be used for the VM's.
 $switchprivate="Private 192.168.100.0/24" 
+
 ##
+
 ### Creates new private network.
+
 $existingSwitch = Get-VMSwitch -Name $switchprivate -SwitchType Internal -ErrorAction SilentlyContinue
-if ($null -eq $existingSwitch.name) {
+if ($existingSwitch.name -eq $null) {
     New-VMSwitch -Name $switchprivate -SwitchType Internal -Notes "created for k8s-lab project "
 } else {
     Write-Host "The switch '$switchprivate' already exists."
@@ -130,13 +103,13 @@ foreach ($vm in $vms) {
     # Check if the VM already exists
     $existingVM = Get-VM -Name  $vm.VMName -ErrorAction SilentlyContinue
 
-    if ($null -eq $existingVM) {
+    if ($existingVM -eq $null) {
         # VM does not exist, create a new one
         New-VM -Name  $vm.VMName -Generation 2 -Path $vmFolder
         $RAM = (1GB * $vm.MemoryGB)
         $RAMmax = (2GB * $vm.MemoryGB)
         Set-VM -Name  $vm.VMName -MemoryStartupBytes $RAM 
-        Set-VM -VMName  $vm.VMName -ProcessorCount $vm.CPUCount # -DynamicMemory -MemoryMaximumBytes $RAMmax -MemoryStartupBytes $RAM
+        Set-VM -VMName  $vm.VMName -ProcessorCount $vm.CPUCount  -DynamicMemory -MemoryMaximumBytes $RAMmax -MemoryStartupBytes $RAM
         Write-Host $vm.VMName "created successfully."
 
     # Hard disk Primary OS
@@ -167,7 +140,7 @@ foreach ($vm in $vms) {
     add-VMNetworkAdapter -VMName $vm.VMName -SwitchName $vm.NetworkSwitch2
     }
     #remove the network adapter without a SwitchName from the VM
-    get-VMNetworkAdapter  -VMName  $vm.VMName | Where-Object {$_.SwitchName -ne $switchprivate -and $_.SwitchName -ne $switchInternet  } |Remove-VMNetworkAdapter   
+    get-VMNetworkAdapter  -VMName  $vm.VMName | where {$_.SwitchName -ne $switchprivate -and $_.SwitchName -ne $switchInternet  } |Remove-VMNetworkAdapter   
 
     # Set boot order
     $bootOrder = @()
@@ -176,7 +149,7 @@ foreach ($vm in $vms) {
         $bootOrder += Get-VMHardDiskDrive -VMName $vm.VMName | Where-Object { $_.ControllerLocation -eq 0 }
     }
     elseif ($vm.BootOrder -eq "Network") {
-        $bootOrder += Get-VMNetworkAdapter -VMName $vm.VMName| Where-Object {$_.SwitchName -eq $switchprivate}
+        $bootOrder += Get-VMNetworkAdapter -VMName $vm.VMName| where {$_.SwitchName -eq $switchprivate}
         $bootOrder += Get-VMHardDiskDrive -VMName $vm.VMName | Where-Object { $_.ControllerLocation -eq 0 }
     }
 
