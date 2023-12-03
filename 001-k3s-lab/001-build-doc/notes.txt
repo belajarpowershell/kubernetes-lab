@@ -1,2 +1,0 @@
-1. trying FAI for quick deployments
-
