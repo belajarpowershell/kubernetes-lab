@@ -31,17 +31,17 @@ Configure a new site to list the files over http.
 rm /etc/nginx/http.d/default.conf
 
 # create a file for the site .
-vi /etc/nginx/http.d/wwwdirectory.conf
 
+vi /etc/nginx/http.d/installfileserver.conf
 # paste the following code.
 server {
     server_name localhost;
-    root /srv/;
+    root /kubernetes-lab/kubernetes-lab-setup/srv/;
     #index index.html;
     location /:x {  # new url path # this is the URL path on browser
-	alias /srv/; # directory to list
-    #in this case http://ip/ will list files in "/srv/"
-	# this might not be best practice, but this is a Lab setup 
+  alias /kubernetes-lab/kubernetes-lab-setup/srv/; # directory to list
+    #in this case http://ip/ will list files in "/kubernetes-lab/kubernetes-lab-setup/srv/"
+  	# this might not be best practice, but this is a Lab setup 
 	autoindex on;
     }
 
@@ -67,12 +67,12 @@ Validate
 
 ```
 # create a file to be listed
-mkdir -p /srv/autoinstall/ && touch /srv/autoinstall/test.txt
+mkdir -p /kubernetes-lab/kubernetes-lab-setup/srv/autoinstall/ && touch /kubernetes-lab/kubernetes-lab-setup/srv/autoinstall/test.txt
 
 #In a browser open the following URL
 https://192.168.100.1
 
-The list of files hosted in `/srv/autoinstall/` will be listed.
+The list of files hosted in `/kubernetes-lab/kubernetes-lab-setup/srv/autoinstall/` will be listed.
 ```
 Here is and example
 ![alt text](./screenshots/Alpine1-screenshots/browser-list-files-update.png)
