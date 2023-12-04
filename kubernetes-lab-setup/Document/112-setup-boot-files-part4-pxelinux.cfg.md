@@ -28,12 +28,18 @@ LABEL ubuntu-DVD-local (Ubuntu  DVD locally mounted - 1GB Memory)
     INITRD http://192.168.100.1/tftp/ubuntu/casper/initrd
     APPEND autoinstall ds=nocloud-net;s=http://192.168.100.1/autoinstall/ ip=dhcp fsck.mode=skip ---
 
+LABEL ubuntu-nfs-boot (Ubuntu  iso mounted on nfs - 1GB Memory)
+    MENU LABEL ubuntu-iso-local (iso locally mounted 1GB of Memory)
+    KERNEL http://192.168.100.1/tftp/ubuntu/casper/vmlinuz
+    INITRD http://192.168.100.1/tftp/ubuntu/casper/initrd
+    APPEND netboot=nfs boot=casper root=/dev/nfs nfsroot=192.168.100.1:/srv/isoubuntu autoinstall ds=nocloud-net;s=http://192.168.100.1/autoinstall/ ip=dhcp fsck.mode=skip ---
+
 LABEL Bootlocal
 	MENU LABEL Bootlocal 
 	LOCALBOOT 0
 
 ```
-With the above configuration in place, a remote server in the `Private 192.168.100.0/24` network that has Network boot configured will be able to boot successfuly. 
+With the above configuration in place, a remote server in the `Private 192.168.100.0/24` network that has Network boot configured will be able to boot successfully. 
 
 ### What happens next?
 When the remote client boots, it will get the DHCP options for the `tftp`` server. The `syslinux.efi` will load and then present the boot menu. Choosing either option will present with the Ubuntu install window. The usual process to setup can now continue.
