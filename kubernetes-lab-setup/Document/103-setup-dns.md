@@ -91,6 +91,42 @@ To validate you need to run nslookup on a remote server.
 As there are no other servers setup, this can be validated when the VM's are created.
 
 ```
+To ensure alpine1 resolves the FQDN's correctly ensure the following is configured 
+
+```
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+
+auto eth1
+iface eth1 inet static
+        address 192.168.100.1
+        netmask 255.255.255.0
+## ensure the following 2 rows are added.
+dns-search k8s.lab  
+dns-nameservers 192.168.100.1 
+
+```
+
+```
+#on alpine1 only.
+rm /etc/resolve
+
+nameserver 192.168.100.1
+search k8s.lab
+
+#in my case the every time the alpine1 is rebooted the values in this file get reset.
+# as such the following is to set the immutable flag 
+
+#enables readonly
+chattr +i /etc/resolv.conf 
+
+#disables readonly
+chattr -i /etc/resolv.conf 
+
+```
 ### Setup `alpine1` server DNS is complete.
 
 
