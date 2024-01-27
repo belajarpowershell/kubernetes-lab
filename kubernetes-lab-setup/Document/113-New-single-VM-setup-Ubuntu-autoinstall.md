@@ -1,6 +1,6 @@
 # `alpine1` setup and configuration.
 
-# Ubuntu Autoinstall 
+# Ubuntu Autoinstall on single VM
 
 One other aspect I was looking at is to automate all the servers to access the configuration files that is reference with the hostname,IP,gateway and Disk config.
 This way every time I have to rebuild the lab, it will be quicker. 
@@ -14,9 +14,10 @@ I understand from the Ubuntu [Automated Server installation](https://ubuntu.com/
 
 #### Lets get to the details
 
-The autoinstall  requires `user-data` and `meta-data`. The `meta-data` is a blank file. 
+The autoinstall  requires `user-data` , `vendor-data` and `meta-data`. The `meta-data` and , `vendor-data`  are blank files. 
 `user-data` however must be populated with some valid content.
 In the file `/srv/tftp/efi64/pxelinux.cfg/default`, the append row below looks for the `user-data` and `meta-data` we need to ensure these file exists is referenced here.
+
 ```
 `autoinstall ds=nocloud-net;s=http://192.168.100.1/autoinstalldata/`
 ```
@@ -165,8 +166,18 @@ Generate the crypted password using the command below. The result will change wi
 mkpasswd --method=sha-512 123 # 123 is the password in this example
 
 ```
- 
- We now have all the files in place for a machine to start up and autoinstall ubuntu.
+
+## Validate 
+
+Validate `user-data` using the command below.
+
+``` 
+cloud-init schema --config-file user-data
+```
+
+
+
+We now have all the files in place for a machine to start up and autoinstall ubuntu.
 
 With the setup in place you can now start the Virtual Machine `master1`, the network boot will present the Menu, select the option `ubuntu-iso-local` the VM will boot up with and the installation will complete without manual input.
 
@@ -174,17 +185,25 @@ With the setup in place you can now start the Virtual Machine `master1`, the net
 This a video covering the initial boot, Ubuntu installation and the booting to the newly installed Ubuntu.
 [Autoinstall-Ubuntu-master1](https://clipchamp.com/watch/5HU0H7YUsnU)
 
+# update to include new link
+
 ## Troubleshooting steps.
  As I performed the configuration, I faced some issues , and the following had configuration errors mostly. i.e. wrong IP, typos etc.
 
  - check dhcp
  Ensure the IP Addresses are assigned correctly.
+ 
  - Check nginx
  You can use the access log to check if a URL has been accessed. This way you can guess where the errors could be.
 
+ - Ensure Virtual Machine specifications meet the minimum requirements.
+ 
+ I had set the Memory to 512MB and enabled Dynamic memory of 512MB to 2048GB but this caused the autoinstall to crash and not complete.
+ 
  - if you choose `ubuntu-iso-remote` ensure VM has minimum 4GB of memory to load the Ubuntu OS setup. This is for the ISO to be extracted to memory.
-- URL path incorrect
-Many times I found myself making simple mistakes in the path. Double check if you did the same too.
-- `meta-data` not created or path configured does not have `meta-data`
 
+- URL path incorrect
+  Many times I found myself making simple mistakes in the path. Double check if you did the same too.
+
+- `meta-data` and `vendor-data` not created or path configured does not have `meta-data` and `vendor-data` 
 

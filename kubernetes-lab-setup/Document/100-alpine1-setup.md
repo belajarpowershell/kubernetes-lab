@@ -39,7 +39,7 @@ sysctl -p
 After logging on at the prompt type 
 ``` 
 setup-alpine
-``` 
+```
 You will be asked a series of questions . I have listed my selection.
 ```
 Keyboard Layout : [us]
@@ -65,7 +65,7 @@ Erase the above disks and continue? [y]
 ```
 
 ## Installation begins.
-Once the installtion is completed you will see the notice to reboot.
+Once the installation is completed you will see the notice to reboot.
 Before rebooting, change the boot sequence in Hyper-V for alpine1 to be Hard Drive first.
 
 This will ensure the reboot will be to the Hard Disk.

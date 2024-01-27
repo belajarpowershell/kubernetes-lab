@@ -9,12 +9,13 @@ To use this script:-
 - run `Powershell ISE` as admin.
 - Save a file to a working folder with the content below.
 - The script uses the `f:\` drive you may want to change it to match the drive you have.
-- You also need to create a file `vms.csv` with the content stated in the script. This will be the source for the VM's to be created. 
+- You also need to create a file `001-Kubernetes-Create-HyperV-VM-v1.1.csv` with the content stated in the script. This will be the source for the VM's to be created. 
 - Once the file is saved click on the `Green Play` button, this will execute the script.
 
-
+// method to access Video-- QR code?
 
 [Here is a video that might help](https://clipchamp.com/watch/EYzyfDZUGRv)
+
 ```
 # create working folder
 # this script will default to  F:\kubernetes-project-lab
@@ -24,16 +25,16 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
 example content of "vms.csv"
 You can change the VM name
 VMName,NetworkSwitch1,NetworkSwitch2,DiskSizeGB1,DiskSizeGB2,CPUCount,MemoryGB,ISOPath,BootOrder
-aaa-alpine1,Internet,"Private 192.168.100.0/24",50,,1,1,alpine-standard-3.18.4-x86_64.iso,DVD
-aaa-loadbalancer,,"Private 192.168.100.0/24",50,,1,1,alpine-standard-3.18.4-x86_64.iso,Network
-aaa-master1,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-aaa-master1,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-aaa-master2,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-aaa-master3,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-aaa-worker1,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-aaa-worker2,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-aaa-worker3,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-aaa-xsinglenode,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+alpine1,Internet,"Private 192.168.100.0/24",50,,1,1,alpine-standard-3.18.4-x86_64.iso,DVD
+loadbalancer,,"Private 192.168.100.0/24",50,,1,1,alpine-standard-3.18.4-x86_64.iso,Network
+master1,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+master1,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+master2,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+master3,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+worker1,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+worker2,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+worker3,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+xsinglenode,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
 
 ##
 NetworkSwitch1 : this is the internet connection
@@ -174,3 +175,10 @@ foreach ($vm in $vms) {
 
 
 ```
+
+
+
+Mistakes made
+
+1. Memory needs to be at 1GB. Any lower the Ubuntu will fail to install. Wasted a few days to catch this. 
+2. If you are using the download ISO to memory then you need to have a minimum of 4GB to load the ISO to memory. 

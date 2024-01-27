@@ -36,11 +36,11 @@ vi /etc/nginx/http.d/installfileserver.conf
 # paste the following code.
 server {
     server_name localhost;
-    root /kubernetes-lab/kubernetes-lab-setup/srv/;
+    root /srv/;
     #index index.html;
-    location /:x {  # new url path # this is the URL path on browser
-  alias /kubernetes-lab/kubernetes-lab-setup/srv/; # directory to list
-    #in this case http://ip/ will list files in "/kubernetes-lab/kubernetes-lab-setup/srv/"
+    location / {  # new url path # this is the URL path on browser
+  alias /srv/; # directory to list
+    #in this case http://ip/ will list files in "/srv/"
   	# this might not be best practice, but this is a Lab setup 
 	autoindex on;
     }
@@ -55,7 +55,7 @@ nginx -t
 
 #reload nginx
 rc-service nginx restart 
-``` 
+```
 Logs
 You can check the files accessed via url, this way you can validate if the correct paths are in place.
 
@@ -67,12 +67,12 @@ Validate
 
 ```
 # create a file to be listed
-mkdir -p /kubernetes-lab/kubernetes-lab-setup/srv/autoinstall/ && touch /kubernetes-lab/kubernetes-lab-setup/srv/autoinstall/test.txt
+mkdir -p /srv/autoinstall/ && touch /srv/autoinstall/test.txt
 
 #In a browser open the following URL
-https://192.168.100.1
+http://192.168.100.1
 
-The list of files hosted in `/kubernetes-lab/kubernetes-lab-setup/srv/autoinstall/` will be listed.
+The list of files hosted in `/srv/autoinstall/` will be listed.
 ```
 Here is and example
 ![alt text](./screenshots/Alpine1-screenshots/browser-list-files-update.png)
@@ -86,5 +86,4 @@ We will proceed with the nfs server installation
 
 Please continue with 
 # [105-alpine1-nfs](./105-alpine1-nfs.md)
-
 

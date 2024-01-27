@@ -25,7 +25,8 @@ rc-update add iptables
 iptables -A FORWARD -i eth1 -j ACCEPT
 
 # eth0 is the external interface (connected to the internet)
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE /etc/init.d/iptables save
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE 
+/etc/init.d/iptables save
 
 ```
 

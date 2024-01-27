@@ -4,7 +4,10 @@
 tftp is required for PXELINUX boot setup.
 This is how the initial boot files are retrieved from the remote client.
 ```
-#install nginx 
+# create directories
+mkdir /srv/tftp/
+
+#install tftpd 
 apk update
 apk add tftp-hpa
 

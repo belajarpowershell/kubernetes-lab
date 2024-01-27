@@ -9,6 +9,8 @@ Turns out `cloud-init` has a command for just that!
 ```
 # enable community repository
 vi /etc/apk/repositories
+remove # from the row
+#http://mirror.jingk.ai/alpine/v3.18/community
 
 #install `cloud-init` 
 apk update
@@ -19,6 +21,8 @@ setup-cloud-init
 ```
 
 Validate `user-data` using the command below.
+At this time the lab has not generated the `user-data`  file . 
+
 You can test this if you have a `user-data` file handy. The `user-data` will be shared in later steps 
 
 ```

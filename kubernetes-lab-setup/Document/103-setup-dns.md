@@ -71,6 +71,9 @@ master3         IN      A       192.168.100.204
 worker1         IN      A       192.168.100.205
 worker2         IN      A       192.168.100.206
 worker3         IN      A       192.168.100.207
+single          IN      A       192.168.100.199
+singleubuntu    IN      A       192.168.100.198
+
 ```
 
 Validate the bind configuration
@@ -94,6 +97,9 @@ As there are no other servers setup, this can be validated when the VM's are cre
 To ensure alpine1 resolves the FQDN's correctly ensure the following is configured 
 
 ```
+# run command to check Network interface configuration
+vi /etc/network/interfaces
+
 auto lo
 iface lo inet loopback
 
@@ -112,7 +118,7 @@ dns-nameservers 192.168.100.1
 
 ```
 #on alpine1 only.
-rm /etc/resolve
+vi /etc/resolve
 
 nameserver 192.168.100.1
 search k8s.lab
