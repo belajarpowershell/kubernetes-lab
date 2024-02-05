@@ -29,7 +29,7 @@
     ethernets:
       eth0:
         addresses:
-        - 192.168.100.201/24
+        - 192.168.100.1/24
         gateway4: 192.168.100.1
         nameservers:
           addresses:
@@ -120,4 +120,5 @@
       id: mount-0
   updates: security 
   version: 1
+
 

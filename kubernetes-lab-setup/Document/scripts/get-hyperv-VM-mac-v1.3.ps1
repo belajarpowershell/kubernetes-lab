@@ -8,16 +8,16 @@ if ((Test-Path -Path $output) -ne "True") { New-Item -Path $output -ItemType Dir
 
 # Define a hashtable for mapping hostnames to IP addresses
 $ipAddressMap = @{
-    "alpine1"       = "192.168.100.201"
-    "loadbalancer"  = "192.168.100.202"
-    "master1"       = "192.168.100.203"
-    "master2"       = "192.168.100.204"
-    "master3"       = "192.168.100.205"
-    "worker1"       = "192.168.100.206"
-    "worker2"       = "192.168.100.207"
-    "worker3"       = "192.168.100.208"
-    "xsinglenode"   = "192.168.100.209"
-    "xsingleubuntu" = "192.168.100.210"
+    "alpine1"       = "192.168.100.1"
+    "loadbalancer"  = "192.168.100.201"
+    "master1"       = "192.168.100.202"
+    "master2"       = "192.168.100.203"
+    "master3"       = "192.168.100.204"
+    "worker1"       = "192.168.100.205"
+    "worker2"       = "192.168.100.206"
+    "worker3"       = "192.168.100.207"
+    "xsinglenode"   = "192.168.100.199"
+    "xsingleubuntu" = "192.168.100.198"
 }
 
 # Get all virtual machines

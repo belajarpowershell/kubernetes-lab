@@ -1,0 +1,19 @@
+---
+- name: Create /data File System
+  hosts: master1
+  become: true
+
+  tasks:
+    - name: Create /data directory
+      ansible.builtin.file:
+        path: /data
+        state: directory
+        mode: '0755'
+
+    - name: Create /data file system
+      ansible.builtin.filesystem:
+        fstype: ext4  # Specify the file system type (e.g., ext4, xfs)
+        dev: /dev/sdb  # Specify the device to use for the file system
+        mount: /data
+        opts: defaults
+        state: present

@@ -1,0 +1,30 @@
+events {}
+
+http {
+   server {
+      listen 8080;
+
+      location /nginx_status {
+         stub_status;
+      }
+   }
+}
+
+stream {
+  upstream k3s_servers {
+{% for group in ['master', 'masterHA'] %}
+{% for host in groups[group] %}
+    server {{ hostvars[host].ansible_host }}:6443;
+{% endfor %}
+{% endfor %}
+  }
+
+  server {
+    listen 6443;
+    proxy_pass k3s_servers;
+  }
+  server {
+    listen 443;
+    proxy_pass k3s_servers;
+  }
+}

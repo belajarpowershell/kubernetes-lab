@@ -1,0 +1,43 @@
+# vars.yml
+k3s_version: "v1.24.6+k3s1"
+
+k3s_installation_script_master: |
+  curl -sfL https://get.k3s.io | \
+  INSTALL_K3S_VERSION="{{ k3s_version }}" \
+  sh -s - server \
+  --write-kubeconfig-mode 644 \
+  --tls-san "{{ load_balancer_hostname }}" \
+  --cluster-init \
+  --node-taint CriticalAddonsOnly=true:NoExecute \
+  --disable "traefik" \
+  --disable "local-storage" \
+  --disable "servicelb"
+
+
+k3s_installation_script_masterHA: |
+  curl -sfL https://get.k3s.io | \
+  INSTALL_K3S_VERSION="{{ k3s_version }}" \
+  sh -s - server \
+  --write-kubeconfig-mode 644 \
+  --tls-san "{{ load_balancer_hostname }}" \
+  --server "https://{{ load_balancer_hostname }}:6443" \
+  --node-taint CriticalAddonsOnly=true:NoExecute \
+  --disable "traefik" \
+  --disable "local-storage" \
+  --disable "servicelb" \
+  --token {{ k3s_token }}
+
+k3s_installation_script_worker: |
+  curl -sfL https://get.k3s.io | \
+  INSTALL_K3S_VERSION="{{ k3s_version }}" \
+  sh -s - agent \
+  --server "https://{{ load_balancer_hostname }}:6443" \
+  --token {{ k3s_token }}
+
+k3s_installation_script_single: |
+  curl -sfL https://get.k3s.io | \
+  INSTALL_K3S_VERSION="{{ k3s_version }}" \
+  sh -s - \
+  --write-kubeconfig-mode 644 \
+  --tls-san "{{ groups['single'][0] }}" \
+  --disable "traefik" 

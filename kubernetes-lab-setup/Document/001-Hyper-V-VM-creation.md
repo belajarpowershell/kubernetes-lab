@@ -26,7 +26,7 @@ example content of "vms.csv"
 You can change the VM name
 VMName,NetworkSwitch1,NetworkSwitch2,DiskSizeGB1,DiskSizeGB2,CPUCount,MemoryGB,ISOPath,BootOrder
 alpine1,Internet,"Private 192.168.100.0/24",50,,1,1,alpine-standard-3.18.4-x86_64.iso,DVD
-loadbalancer,,"Private 192.168.100.0/24",50,,1,1,alpine-standard-3.18.4-x86_64.iso,Network
+loadbalancer,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
 master1,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
 master1,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
 master2,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network

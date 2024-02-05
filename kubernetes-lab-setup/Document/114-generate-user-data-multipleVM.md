@@ -2,7 +2,7 @@
 
 ### Generate `user-data-mac-address` file.
 
-For a Kubernetes cluster we will need multiple Virtual Machines. This will require multiple `user-data-mac-address` files to be created. Here I use PowerShellt to generate the files.
+For a Kubernetes cluster we will need multiple Virtual Machines. This will require multiple `user-data-mac-address` files to be created. Here I use PowerShell to generate the files.
 
 To setup each Hyper-V VM with the Ubuntu Operating system we need to generate unique `user-data` files. The following script generates the script based on a working `user-data` file. This working file was extracted by installing Ubuntu from scratch with the relevant configurations. This file can be obtained from `/var/log/installer/autoinstall-user-data`. This file is renamed as `user-data-template.yaml` in this script. The script then creates new files based on the mac-address with the hostname and IP address updated.  
 
@@ -17,16 +17,15 @@ if ((Test-Path -Path $output) -ne "True") { New-Item -Path $output -ItemType Dir
 
 # Define a hashtable for mapping hostnames to IP addresses
 $ipAddressMap = @{
-    "alpine1"       = "192.168.100.201"
-    "loadbalancer"  = "192.168.100.202"
-    "master1"       = "192.168.100.203"
-    "master2"       = "192.168.100.204"
-    "master3"       = "192.168.100.205"
-    "worker1"       = "192.168.100.206"
-    "worker2"       = "192.168.100.207"
-    "worker3"       = "192.168.100.208"
-    "xsinglenode"   = "192.168.100.209"
-    "xsingleubuntu" = "192.168.100.210"
+    "alpine1"       = "192.168.100.1"
+    "loadbalancer"  = "192.168.100.201"
+    "master1"       = "192.168.100.202"
+    "master2"       = "192.168.100.203"
+    "master3"       = "192.168.100.204"
+    "worker1"       = "192.168.100.205"
+    "worker2"       = "192.168.100.206"
+    "worker3"       = "192.168.100.207"
+    "xsinglenode"   = "192.168.100.199"
 }
 
 # Get all virtual machines
@@ -155,3 +154,8 @@ Validate by browsing `http://192.168.100.1/`
 To update Video of Script generation and the Ubuntu setup.
 
 , `vendor-data` 
+
+Troubleshooting tips
+
+The MAC addresses for a newly created HyperV VM is not generated until its started at least once. 
+

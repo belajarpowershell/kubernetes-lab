@@ -1,0 +1,8 @@
+---
+- name: remove k3s
+  hosts: master1
+  become: true
+
+  tasks:
+    - name: Run k3s installation script
+      shell: "/usr/local/bin/k3s-uninstall.sh"

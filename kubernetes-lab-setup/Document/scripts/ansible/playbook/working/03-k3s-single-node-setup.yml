@@ -1,0 +1,104 @@
+---
+- name: Prereq Disable Firewalld, SELinux, Multipath, and Swap
+  hosts: singleubuntu
+  become: true
+  
+
+  tasks:
+    - name: Disable Swap
+      ansible.builtin.mount:
+        path: swap
+        state: absent
+    - name: Create /var/log/kubernetes directory
+      ansible.builtin.file:
+        path: /var/log/kubernetes
+        state: directory
+
+    - name: Create /var/log/kubernetes/audit directory
+      ansible.builtin.file:
+        path: /var/log/kubernetes/audit
+        state: directory
+
+    - name: Create /var/lib/rancher directory
+      ansible.builtin.file:
+        path: /var/lib/rancher/
+        state: directory
+
+    - name: Create /var/lib/rancher/k3s directory
+      ansible.builtin.file:
+        path: /var/lib/rancher/k3s
+        state: directory
+
+    - name: Create /var/lib/rancher/k3s/server directory
+      ansible.builtin.file:
+        path: /var/lib/rancher/k3s/server
+        state: directory
+
+    - name: Create /var/lib/rancher/k3s/server/manifests directory
+      ansible.builtin.file:
+        path: /var/lib/rancher/k3s/server/manifests
+        state: directory
+
+    - name: Create audit.yaml file
+      ansible.builtin.copy:
+        content: |
+          apiVersion: audit.k8s.io/v1 
+          kind: Policy
+          rules:
+            - level: Metadata
+        dest: /var/lib/rancher/k3s/server/manifests/audit.yaml
+
+
+- name: Install K3S on xsinglenode
+  hosts: xsinglenode
+  become: true
+  gather_facts: false
+
+  vars:
+    k3s_version: "v1.24.6+k3s1"
+
+  tasks:
+    - name: Get Load Balancer Hostname from Inventory ( singlenode hostname)
+      set_fact:
+        load_balancer_hostname: "{{ hostvars['singleubuntu'].inventory_hostname }}"
+    - name: Check if kubectl is installed
+      command: "which kubectl"
+      register: kubectl_installed
+      ignore_errors: true
+
+    - name: Check if k3s is installed
+      command: "which k3s"
+      register: k3s_installed
+      ignore_errors: true
+
+    - name: Echo kubectl Installation Status
+      debug:
+        var: kubectl_installed.rc
+
+    - name: Echo k3s Installation Status
+      debug:
+        var: k3s_installed.rc
+
+    - name: Echo loadbalance-hostname
+      debug:
+        var: load_balancer_hostname
+
+    - name: Run K3S Installation Script
+      shell: |
+        curl -sfL https://get.k3s.io | \
+        INSTALL_K3S_VERSION="{{ k3s_version }}" \
+        sh -s - server \
+        --write-kubeconfig-mode 644 \
+        --tls-san "{{ load_balancer_hostname }}" \
+        --disable "traefik" \
+      when: kubectl_installed.rc != 0 or k3s_installed.rc != 0
+    - name: Wait for node to be ready
+      become: yes
+      ansible.builtin.shell: $([[ $(kubectl get node $(cat /etc/hostname) -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}') == "True" ]])
+      args:
+        executable: /bin/bash
+      register: kubelet_ready
+      until: kubelet_ready.rc == 0
+      retries: 60
+      delay: 3
+

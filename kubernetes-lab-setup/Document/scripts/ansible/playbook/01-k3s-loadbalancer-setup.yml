@@ -1,0 +1,103 @@
+---
+- name: Install Docker on Ubuntu
+  hosts: lb
+  become: true
+  tasks:
+  
+    - name: Update package index
+      apt:
+        update_cache: yes
+
+    - name: Install ca-certificates and curl
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - ca-certificates
+        - curl
+        - apt-transport-https
+        - software-properties-common
+
+    - name: Import Docker APT repository GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker APT repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+        state: present
+      register: apt_repo_result
+
+    - name: Update package index (again)
+      apt:
+        update_cache: yes
+
+    - name: Install Docker
+      apt:
+        name: 
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+
+    - name: Create docker group
+      group:
+        name: docker
+        state: present
+
+    - name: Add current user to docker group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+
+    - name: Restart Docker service
+      service:
+        name: docker
+        state: restarted
+
+    - name: Enable Docker service at boot
+      service:
+        name: docker
+        enabled: yes
+
+    - name: Enable Containerd service at boot
+      service:
+        name: containerd
+        enabled: yes
+
+
+
+
+  #   - name: Install required Python library (requests)
+  #     apt:
+  #       name: python3-requests
+  #       state: present
+
+    - name: Run Nginx Docker container
+      docker_container:
+        name: k3s-LB-nginx_container
+        image: nginx:1.14
+        detach: true
+        restart_policy: unless-stopped
+        ports:
+          - "6443:6443"
+          - "443:443"
+          - "8080:8080"
+        volumes:
+          - "/etc/nginx.conf:/etc/nginx/nginx.conf"
+
+    - name: Create /etc/nginx.conf file
+      template:
+        src: /srv/ansible/playbook/j2/nginx.conf.j2
+        dest: /etc/nginx.conf
+      notify: Restart Docker
+
+  handlers:
+    - name: Restart Docker
+      systemd:
+        name: docker
+        state: restarted

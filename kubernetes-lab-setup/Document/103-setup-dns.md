@@ -71,8 +71,7 @@ master3         IN      A       192.168.100.204
 worker1         IN      A       192.168.100.205
 worker2         IN      A       192.168.100.206
 worker3         IN      A       192.168.100.207
-single          IN      A       192.168.100.199
-singleubuntu    IN      A       192.168.100.198
+xsinglenode     IN      A       192.168.100.199
 
 ```
 
