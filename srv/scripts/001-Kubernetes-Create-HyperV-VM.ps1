@@ -1,23 +1,4 @@
-# Hyper-V Virtual Machine Powershell script 
-
-As part of a Lab setup, I expect to create and destroy the VM's regularly.
-To reduce the pain of recreating manually, I use a Powershell script to create the Hyper-V VM's with certain specifications.
-
-To use this script, you must have already have a working Hyper-V. You can refer to this link [Enable Hyper-V on Windows 11](https://techcommunity.microsoft.com/t5/educator-developer-blog/step-by-step-enabling-hyper-v-for-use-on-windows-11/ba-p/3745905)
-
-To use this script:-
-- run `Powershell ISE` as admin.
-- Save a file to a working folder with the content below.
-- The script uses the `f:\` drive you may want to change it to match the drive you have.
-- You also need to create a file `001-Kubernetes-Create-HyperV-VM-v1.1.csv` with the content stated in the script. This will be the source for the VM's to be created. 
-- Once the file is saved click on the `Green Play` button, this will execute the script.
-
-// method to access Video-- QR code?
-
-[Here is a video that might help](https://clipchamp.com/watch/EYzyfDZUGRv)
-
-```
-# create working folder
+﻿# create working folder
 # this script will default to  F:\kubernetes-project-lab
 # Change the Drive letter to on that exists on your computer,
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
@@ -25,16 +6,16 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
 example content of "vms.csv"
 You can change the VM name
 VMName,NetworkSwitch1,NetworkSwitch2,DiskSizeGB1,DiskSizeGB2,CPUCount,MemoryGB,ISOPath,BootOrder
-alpine1,Internet,"Private 192.168.100.0/24",50,,1,1,alpine-standard-3.18.4-x86_64.iso,DVD
-loadbalancer,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-master1,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-master1,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-master2,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-master3,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-worker1,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-worker2,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-worker3,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
-xsinglenode,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+aaa-alpine1,Internet,"Private 192.168.100.0/24",50,,1,1,alpine-standard-3.18.4-x86_64.iso,DVD
+aaa-loadbalancer,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+aaa-master1,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+aaa-master1,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+aaa-master2,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+aaa-master3,,"Private 192.168.100.0/24",50,,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+aaa-worker1,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+aaa-worker2,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+aaa-worker3,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
+aaa-xsinglenode,,"Private 192.168.100.0/24",50,30,1,1,ubuntu-20.04.6-live-server-amd64.iso,Network
 
 ##
 NetworkSwitch1 : this is the internet connection
@@ -45,20 +26,28 @@ DVD > First Boot DVD, Second Boot HDD
 Network > First Boot Network  "Private 192.168.100.0/24" , Second Boot HDD
 #>
 
+# Check if running as administrator
+if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Host "This script requires administrator privileges. Please run it as an administrator."
+    # Exit the script
+    Exit
+}
+
+
 # Get the directory containing the script
 $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 
 # Set the path to the CSV file
-$csvPath = "$scriptDirectory\vms.csv"
+$csvPath = "$scriptDirectory\001-Kubernetes-Create-HyperV-VM.csv"
 
 # Read the CSV file
 $vms = Import-Csv -Path $csvPath
 
 # create working folder
 #this is where the Hyper-V files will be created.
-# this script will default to  F:\kubernetes-project-lab
-$workingfolder = "F:\kubernetes-project-lab"
+# this script will default to  G:\kubernetes-project-lab
+$workingfolder = "G:\kubernetes-project-lab"
 if (!(Test-Path -Path "$workingfolder" -PathType Container)) {
         New-Item -Path "$workingfolder" -ItemType Directory
     }
@@ -119,12 +108,20 @@ foreach ($vm in $vms) {
     [System.UInt64]$Disksize1=$null
     [System.UInt64]$Disksize2=$null
 
-    # VM CPU and Memory config
-    New-VM -Name $vm.VMName -Generation 2 -Path $vmfolder
-    $RAM = (1GB *  $vm.MemoryGB)
-    $RAMmax=(2GB * $vm.MemoryGB)
-    set-VM -Name $vm.VMName -MemoryStartupBytes $RAM 
-    Set-VM -VMName $vm.VMName -ProcessorCount $vm.CPUCount # -DynamicMemory -MemoryMaximumBytes $RAMmax -MemoryStartupBytes $RAM
+    # Check if the VM already exists
+    $existingVM = Get-VM -Name  $vm.VMName -ErrorAction SilentlyContinue
+
+    if ($existingVM -eq $null) {
+        # VM does not exist, create a new one
+        New-VM -Name  $vm.VMName -Generation 2 -Path $vmFolder
+        $RAM = (1GB * $vm.MemoryGB)
+        $RAMmax = (2GB * $vm.MemoryGB)
+        $vm.MemoryGB
+        $RAM
+
+        Set-VM -Name  $vm.VMName -MemoryStartupBytes $RAM 
+        Set-VM -VMName  $vm.VMName -ProcessorCount $vm.CPUCount  -DynamicMemory -MemoryMaximumBytes $RAMmax -MemoryStartupBytes $RAM
+        Write-Host $vm.VMName "created successfully."
 
     # Hard disk Primary OS
     [System.UInt64]$Disksize1=([long]$vm.DiskSizeGB1 * 1GB)
@@ -170,15 +167,13 @@ foreach ($vm in $vms) {
 
     # Set the boot order for the VM
     Set-VMFirmware -VMName $vm.VMName -BootOrder $bootOrder -EnableSecureBoot Off
+    # Disable checkpoints 
+    Set-VM -Name $vm.VMName -CheckpointType Disabled
+
+    } else {
+        Write-Host $vm.VMName "already exists."
+    }
+
+
 
 }
-
-
-```
-
-
-
-Mistakes made
-
-1. Memory needs to be at 1GB. Any lower the Ubuntu will fail to install. Wasted a few days to catch this. 
-2. If you are using the download ISO to memory then you need to have a minimum of 4GB to load the ISO to memory. 

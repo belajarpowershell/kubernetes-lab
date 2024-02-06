@@ -1,5 +1,3 @@
-# `alpine1` setup and configuration.
-
 ## Initial Alpine OS setup
 
 ## Key information
@@ -95,7 +93,7 @@ We can test this when DHCP is setup later on.
 
 
 
-## Alpine OS install completed 
+# Alpine OS install completed 
 
 
 ## Next step
@@ -103,4 +101,5 @@ We can test this when DHCP is setup later on.
 We will proceed to setup alpine1 as a DHCP server 
 
 Please continue with 
-# [101-alpine1-setup-DHCP-server](./../101-alpine1-setup-DHCP-server.md)
+
+### 101-alpine1-setup-DHCP-server

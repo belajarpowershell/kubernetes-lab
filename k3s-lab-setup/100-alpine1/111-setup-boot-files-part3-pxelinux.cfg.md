@@ -1,4 +1,3 @@
-# `alpine1` setup and configuration.
 #### Configure the boot menu `pxelinux.cfg/default`
 The final piece is to prepare the boot menu to load and present a selection that will install the Ubuntu OS.
 
@@ -42,9 +41,10 @@ LABEL Bootlocal
 With the above configuration in place, a remote server in the `Private 192.168.100.0/24` network that has Network boot configured will be able to boot successfully. 
 
 ### What happens next?
-When the remote client boots, it will get the DHCP options for the `tftp`` server. The `syslinux.efi` will load and then present the boot menu. Choosing either option will present with the Ubuntu install window. The usual process to setup can now continue.
+When the remote client boots, it will get the DHCP options for the `tftp` server. The `syslinux.efi` will load and then present the boot menu. Choosing either option will present with the Ubuntu install window. The usual process to setup can now continue.
 
- ## Troubleshooting steps.
+### Lessons Learnt
+
  As I performed the configuration, I faced some issues , and the following had configuration errors mostly. i.e. wrong IP, typos etc.
  - Check DHCP 
  Check the logs to see if the IP is being assigned. If it does not it could be a network related configuration.
@@ -56,6 +56,7 @@ When the remote client boots, it will get the DHCP options for the `tftp`` serve
 
 ## Next step
 
-THe PXE boot to install Ubuntu is now complete. 
+The PXE boot to install Ubuntu is now complete. 
 If you are looking to automate the entries for the Ubuntu installation, the next step will review the relevant points.
-# [113-New-VM-setup-Ubuntu-autoinstall](./../113-New-VM-setup-Ubuntu-autoinstall.md)
+
+### 113-New-VM-setup-Ubuntu-autoinstall

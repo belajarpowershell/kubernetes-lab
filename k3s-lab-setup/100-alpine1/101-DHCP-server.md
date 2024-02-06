@@ -1,5 +1,3 @@
-# `alpine1` setup and configuration.
-
 
 ## Install and Configure DHCP
 
@@ -111,7 +109,7 @@ Password : `123` # if the proposed Password was used
 ![alt text](./../screenshots/Alpine1-screenshots/WindowsTerminal_ssh-alpine1.png)
 
 
-## DHCP is installed and SSH to `alpine1` server established.
+# DHCP is installed and SSH to `alpine1` server established.
 
 ## Next step
 
@@ -120,4 +118,4 @@ We will proceed with the router installation.
 The validation for DHCP and Internet on the private network will be tested at a later stage.
 
 Please continue with 
-# [102-alpine1-setup-router](./../102-alpine1-setup-router.md)
+### 102-alpine1-setup-route

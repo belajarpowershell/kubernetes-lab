@@ -1,5 +1,3 @@
-# `alpine1` setup and configuration.
-
 ## Configure as a Router 
 
 In this setup, `alpine1` will function as an internet router for the servers in the  `Private 192.168.100.0/24` network.
@@ -41,4 +39,4 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 We will proceed with the DNS server installation 
 
 Please continue with 
-# [103-alpine1-setup-dns](./../103-alpine1-setup-dns.md)
+### 103-alpine1-setup-dns

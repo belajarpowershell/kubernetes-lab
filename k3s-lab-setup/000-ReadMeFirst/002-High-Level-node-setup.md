@@ -1,4 +1,4 @@
-# Kubernetes lab setup - High level reference.
+## Kubernetes lab setup - High level reference.
 
 
 | hostname | IP address |
@@ -34,7 +34,7 @@
 
 `metallb` The Ingress requires a set of IP addresses to cater for incoming traffic to the Kubernetes cluster. These IP ranges are reserved for this functionality.
 
-#### High Level Network Diagram
+## High Level Network Diagram
 
 HYPER-V Network connectivity
 All the VM's will use `alpine1` as the gateway to the internet.

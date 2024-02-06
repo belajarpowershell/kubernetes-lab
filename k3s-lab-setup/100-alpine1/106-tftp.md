@@ -1,8 +1,7 @@
-# `alpine1` setup and configuration.
-
 ## Install and Configure tftpd
 tftp is required for PXELINUX boot setup.
 This is how the initial boot files are retrieved from the remote client.
+
 ```
 # create directories
 mkdir /srv/tftp/
@@ -33,5 +32,4 @@ The path `/srv/tftp/` is important to note as the subsequent configuration will 
 We will proceed with the cloud-init installation 
 
 Please continue with 
-# [107-alpine1-cloud-init](./../107-alpine1-cloud-init.md)
-
+### 107-alpine1-cloud-init

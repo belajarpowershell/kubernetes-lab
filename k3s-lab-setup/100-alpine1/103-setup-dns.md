@@ -1,7 +1,5 @@
-# `alpine1` setup and configuration.
-
 ## Configure DNS server
-# Install bind ( DNS server) and tools dig and nslookup on alpine1.
+## Install bind ( DNS server) and tools dig and nslookup on alpine1.
 DNS resolves Names to IP addresses. Kubetnetes will need the DNS to be closer to a production setup. Hence the requirement. This service can be skipped , but then all the connectivity will be via IP alone.
 
 In this lab we will setup `bind` as the DNS server application.
@@ -140,5 +138,4 @@ chattr -i /etc/resolv.conf
 We will proceed with the nginx server installation 
 
 Please continue with 
-# [104-alpine1-setup-nginx](./../104-alpine1-setup-nginx.md)
-
+### 104-alpine1-setup-nginx

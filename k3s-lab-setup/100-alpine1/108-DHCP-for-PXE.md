@@ -1,6 +1,4 @@
-# `alpine1` setup and configuration.
-
-## update DHCP options to provide PXE boot information to clients.
+## DHCP options to provide PXE boot information to clients.
 
 The initial DHCP was to provide IP addresses to remote clients. 
 As we now want to provide the scope options for the tftp servers with the boot file location, lets make the following changes.
@@ -46,5 +44,4 @@ Lets defer the test after the boot files have been setup.
 We will proceed with the DHCP setup for PXE requirements. 
 
 Please continue with 
-# [108-alpine1-DHCP-for-PXE](./../108-alpine1-DHCP-for-PXE.md)
-
+### 109-setup-boot-files-part1-PXE

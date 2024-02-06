@@ -1,5 +1,3 @@
-# `alpine1` setup and configuration.
-
 ## Install and Configure cloud-init
 cloud-init is the application that reads the `user-data` script as part of autoinstallation. 
 As I have been having issues with my `user-data` I needed a method to validate the content.
@@ -37,5 +35,4 @@ My error was to put in an entry for remark that was not recognized.
 We will proceed with the DHCP setup for PXE requirements. 
 
 Please continue with 
-# [108-alpine1-DHCP-for-PXE](./../108-alpine1-DHCP-for-PXE.md)
-
+### 108-alpine1-DHCP-for-PXE

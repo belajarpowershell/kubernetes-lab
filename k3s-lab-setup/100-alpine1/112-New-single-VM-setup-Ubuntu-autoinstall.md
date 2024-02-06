@@ -1,5 +1,3 @@
-# `alpine1` setup and configuration.
-
 # Ubuntu Autoinstall on single VM
 
 One other aspect I was looking at is to automate all the servers to access the configuration files that is reference with the hostname,IP,gateway and Disk config.
@@ -182,12 +180,15 @@ We now have all the files in place for a machine to start up and autoinstall ubu
 With the setup in place you can now start the Virtual Machine `master1`, the network boot will present the Menu, select the option `ubuntu-iso-local` the VM will boot up with and the installation will complete without manual input.
 
 #### Video overview on the Ubuntu Autoinstall process .
+//
+
 This a video covering the initial boot, Ubuntu installation and the booting to the newly installed Ubuntu.
 [Autoinstall-Ubuntu-master1](https://clipchamp.com/watch/5HU0H7YUsnU)
 
-# update to include new link
 
-## Troubleshooting steps.
+
+### Lessons Learnt.
+
  As I performed the configuration, I faced some issues , and the following had configuration errors mostly. i.e. wrong IP, typos etc.
 
  - check dhcp

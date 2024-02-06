@@ -1,5 +1,3 @@
-# `alpine1` setup and configuration.
-
 ## Install and Configure nginx
 A webserver is handy for several reasons. In this Lab we will use a webserver for quite a bit of stuff. Lets set up `nginx` for this purpose.
 
@@ -85,5 +83,4 @@ Here is and example
 We will proceed with the nfs server installation 
 
 Please continue with 
-# [105-alpine1-nfs](./../105-alpine1-nfs.md)
-
+### 105-alpine1-nfs

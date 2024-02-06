@@ -1,6 +1,6 @@
 
 
-### Generate `user-data-mac-address` file.
+## Generate `user-data-mac-address` file.
 
 For a Kubernetes cluster we will need multiple Virtual Machines. This will require multiple `user-data-mac-address` files to be created. Here I use PowerShell to generate the files.
 

@@ -174,14 +174,7 @@ List kubernetes nodes
 
 Here is a screenshot that will provide some perspective
 
-![202-01-kubectl-example](.\screenshots\202-01-kubectl-example.png)
+![202-01-kubectl-example](./..\screenshots\202-01-kubectl-example.png)
 
-Congratulations you now have 2 Lightweight Clusters you can use for your Lab. 
-
-What's next?
-
-There is so much that you need to learn. Here are a few to get you started.
-
-1. Install and configure ArgoCD 
-2. Install and configure Prometheus
+2. 
 

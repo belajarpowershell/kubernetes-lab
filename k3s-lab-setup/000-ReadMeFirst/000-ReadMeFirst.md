@@ -1,31 +1,24 @@
- Folder Structure
+# Kubernetes Lab Setup
 
-- /kubernetes-lab
-  
-  - k3s-lab-setup
-  
-    - The server sequence of setup
-  - scripts
-  - srv/
-  
-    - tftp/
-      - bios
-        - 
-      - efi64
-        - 
-    - autoinstall/
-      - add-passphrase.sh
-      - copy-ssh-key.sh
-      - hosts.ini
-    - ansible/
-      - playbook
-        - .kube/
-        - j2/
-  
+This repository contains the relevant steps to setup 2  Lightweight Kubernetes ( k3s) a single node and a High Available Cluster.
+
+The objective of this lab is to be able to rebuild the clusters very quickly as this is for testing services and applications. 
+
+Files required for the setup can be extracted from the git repository from the script below.
+
+Follow the sequence number in the files , this will ensure that all the required services are setup.
+
+#####  This script is to download the folder /srv from the Repository https://github.com/belajarpowershell/kubernetes-lab
 
 ```
+# create a file download-srv.sh with below contents on `alpine1`
+# run following command to make this executable
+# chmod +x download-srv.sh
+# run the script
+# ./download-srv.sh 
 
-## This script is to download the folder /srv from the Repository https://github.com/belajarpowershell/kubernetes-lab
+# This script will pull the specific folder/srv from the git repository and move the contents to the /srv on alpine1.
+
 
 # initialize a new folder
 git init kubernetes-lab
@@ -50,11 +43,27 @@ mv srv/* /srv
 echo " files moved to /srv " 
 echo " script completed"
 
-# create a file download-srv.sh with above contents on `alpine1`
-# run following command to make this executable
-# chmod +x download-srv.sh
-# run the script
-# ./download-srv.sh 
 
 ```
 
+## Folder Structure
+
+- /kubernetes-lab
+    - k3s-lab-setup
+      - The server sequence of setup
+  - scripts
+  - srv/
+      - tftp/
+      - bios
+      - efi64
+    - autoinstall/
+      - add-passphrase.sh
+      - copy-ssh-key.sh
+      - hosts.ini
+    - ansible/
+      - playbook
+        - .kube/
+        - j2/
+
+
+```

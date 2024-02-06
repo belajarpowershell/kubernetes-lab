@@ -1,9 +1,9 @@
-# `alpine1` setup and configuration.
-
 ## Setup boot files for `PXELINUX`
 
 The boot files are separated by the type of Boot process `BIOS` and `EFI`
 Take note the files while have duplicate names, there are separate versions for `BIOS` and `EFI`.
+
+If you had followed the steps from 000-ReadMeFirst, you would already have the following files available.
 
 ## TFTP Directory and content
 
@@ -31,4 +31,4 @@ Take note the files while have duplicate names, there are separate versions for 
 
 We will proceed with the preparation of the OS boot files.
 Continue with 
-# [111-alpine1-setup-boot-files-part3-OS](./../111-alpine1-setup-boot-files-part3-OS.md)
+### 110-setup-boot-files-part2-OS
