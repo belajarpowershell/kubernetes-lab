@@ -1,0 +1,367 @@
+
+- name: Configure DHCP server on localhost
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Install dhcp package
+      apk:
+        name: dhcp
+        state: present
+
+    - name: Create dhcpd.conf file
+      file:
+        path: /etc/dhcp/dhcpd.conf
+        state: touch
+
+    - name: Add dhcpd configuration
+      blockinfile:
+        path: /etc/dhcp/dhcpd.conf
+        block: |
+          subnet 192.168.100.0 netmask 255.255.255.0 {
+            range 192.168.100.100 192.168.100.200;
+            option domain-name-servers 192.168.100.1;
+            option routers 192.168.100.1;
+          }
+      delegate_to: localhost
+
+    - name: Set dhcpd to start at boot
+      command: rc-update add dhcpd default
+
+    - name: Start the dhcpd service
+      service:
+        name: dhcpd
+        state: started
+
+- name: Configure IP forwarding and enable IP routing on alpine1
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Enable IP forwarding in sysctl.conf
+      lineinfile:
+        path: /etc/sysctl.conf
+        line: "net.ipv4.ip_forward=1"
+      notify: Reload sysctl.conf
+
+    - name: Install iptables package
+      apk:
+        name: iptables
+        state: present
+
+    - name: Add iptables service to startup
+      command: rc-update add iptables default
+
+    - name: Allow forwarding from eth1
+      iptables:
+        chain: FORWARD
+        in_interface: eth1
+        jump: ACCEPT
+
+    - name: Enable NAT for eth0
+      iptables:
+        table: nat
+        chain: POSTROUTING
+        out_interface: eth0
+        jump: MASQUERADE
+
+    - name: Save iptables rules
+      command: /etc/init.d/iptables save
+      notify: Restart iptables service
+
+  handlers:
+    - name: Reload sysctl.conf
+      command: sysctl -p
+
+    - name: Restart iptables service
+      service:
+        name: iptables
+        state: restarted
+
+
+- name: Configure Bind DNS server on alpine1
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Install bind and bind-tools
+      apk:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - bind
+        - bind-tools
+
+    - name: Add named service to startup
+      command: rc-update add named default
+
+    - name: Create named.conf file
+      file:
+        path: /etc/bind/named.conf
+        state: touch
+
+    - name: Add configuration to named.conf file
+      blockinfile:
+        path: /etc/bind/named.conf
+        block: |
+          options {
+               listen-on port 53 { 127.0.0.1; 192.168.100.1; };
+               forwarders { 8.8.8.8; 8.8.4.4; };
+               directory "/var/bind";
+               dump-file "/var/bind/data/cache_dump.db";
+               statistics-file "/var/bind/data/named_stats.txt";
+               memstatistics-file "/var/bind/data/named_mem_stats.txt";
+               allow-query { localhost; 192.168.100.0/24; };
+               recursion yes;
+          };
+          zone "k8s.lab" IN {
+                  type master;
+                  file "/etc/bind/master/k8s.lab";
+          };
+      delegate_to: localhost
+
+    - name: Create directory for master zone file
+      file:
+        path: /etc/bind/master/
+        state: directory
+
+    - name: Create and configure master zone file
+      copy:
+        content: |
+          $TTL 38400
+          @ IN SOA ns.k8s.lab admin.k8s.lab. (
+          2       ;Serial
+          600     ;Refresh
+          300     ;Retry
+          60480   ;Expire
+          600 )   ;Negative Cache TTL
+
+          @       IN      NS      ns1.k8s.lab.
+          ns1     IN      A       192.168.100.1
+          alpine1         IN      A       192.168.100.1
+          k8s-ha-cluster  IN      A       192.168.100.201
+          loadbalancer    IN      A       192.168.100.201
+          master1         IN      A       192.168.100.202
+          master2         IN      A       192.168.100.203
+          master3         IN      A       192.168.100.204
+          worker1         IN      A       192.168.100.205
+          worker2         IN      A       192.168.100.206
+          worker3         IN      A       192.168.100.207
+          xsinglenode     IN      A       192.168.100.199
+        dest: /etc/bind/master/k8s.lab
+
+    - name: Restart named service
+      service:
+        name: named
+        state: restarted
+
+    - name: Add nameserver to /etc/resolv.conf
+      lineinfile:
+        path: /etc/resolv.conf
+        line: "{{ item }}"
+      loop:
+        - nameserver 192.168.100.1
+        - search k8s.lab
+
+    - name: Set immutable flag for /etc/resolv.conf
+      command: chattr +i /etc/resolv.conf
+
+- name: Configure Nginx on alpine1
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Update APK package cache
+      apk:
+        update_cache: yes
+
+    - name: Install Nginx package
+      apk:
+        name: nginx
+        state: present
+
+    - name: Add Nginx service to startup
+      command: rc-update add nginx default
+
+    - name: Start Nginx service
+      service:
+        name: nginx
+        state: started
+    - name: Remove default nginx configuration file
+      file:
+        path: /etc/nginx/http.d/default.conf
+        state: absent
+
+    - name: Add dhcpd configuration
+      blockinfile:
+        path: /etc/dhcp/dhcpd.conf
+        block: |
+          server {
+              server_name localhost;
+              root /srv/;
+              #index index.html;
+              location / {  # new url path # this is the URL path on browser
+            alias /srv/; # directory to list
+              #in this case http://ip/ will list files in "/srv/"
+              # this might not be best practice, but this is a Lab setup 
+            autoindex on;
+              }
+          }
+      delegate_to: localhost
+    - name: Check Nginx configuration syntax
+      command: nginx -t
+      
+    - name: Reload Nginx service
+      service:
+        name: nginx
+        state: reloaded
+
+
+- name: Configure NFS server and mount ISO on localhost
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Create folder to download ISO
+      file:
+        path: /srv/tftp/iso
+        state: directory
+
+    - name: Mount ISO file temporarily
+      mount:
+        path: /srv/isoubuntu
+        src: /srv/tftp/iso/ubuntu-20.04.6-live-server-amd64.iso
+        fstype: iso9660
+        opts: loop,ro
+        state: mounted
+
+    - name: Install NFS utils
+      apk:
+        update_cache: yes
+        name: nfs-utils
+        state: present
+
+    - name: Add NFS to startup
+      command: rc-update add nfs
+
+    - name: Start NFS service
+      service:
+        name: rpcbind
+        state: started
+
+    - name: Start NFS service
+      service:
+        name: nfs
+        state: started
+
+    - name: Configure NFS exports
+      lineinfile:
+        path: /etc/exports
+        line: "/srv/isoubuntu 192.168.100.1/24(async,ro,no_subtree_check,no_root_squash)"
+      notify: Refresh NFS exports
+
+    - name: Refresh NFS exports
+      command: exportfs -arv
+
+    - name: Create directory for NFS mount test
+      file:
+        path: /mntnfs
+        state: directory
+
+    - name: Mount NFS share
+      mount:
+        path: /mntnfs
+        src: "192.168.100.1:/srv/isoubuntu"
+        fstype: nfs
+        state: mounted
+
+    - name: Check mounted files
+      shell: ls /mntnfs/
+      register: mount_output
+
+    - debug:
+        msg: "Files in mounted NFS share: {{ mount_output.stdout_lines }}"
+
+  handlers:
+    # - name: Reboot to validate ISO mount
+    #   command: reboot
+    #   async: 1
+    #   poll: 0
+    #   ignore_errors: true
+
+    - name: Refresh NFS exports
+      command: exportfs -arv
+
+
+- name: Configure Cloud-init on localhost
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Update APK package cache
+      apk:
+        update_cache: yes
+
+    - name: Install Cloud-init
+      apk:
+        name: cloud-init
+        state: present
+
+    - name: Setup Cloud-init
+      command: setup-cloud-init
+
+
+- name: Configure DHCP server
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Create DHCP configuration file
+      blockinfile:
+        path: /etc/dhcp/dhcpd.conf
+        block: |
+          subnet 192.168.100.0 netmask 255.255.255.0 {
+             range 192.168.100.50 192.168.100.100;
+             option routers 192.168.100.1;
+             option domain-name-servers 192.168.100.1;
+             option time-servers 192.168.100.1;
+             option ntp-servers 192.168.100.1;
+             # next-server 192.168.100.1; # this is typically if the tftp is on another server.
+             if substring(option vendor-class-identifier, 0, 20) = "PXEClient:Arch:00000" {
+                   filename "bios/pxelinux.0";
+             }
+             if substring(option vendor-class-identifier, 0, 20) = "PXEClient:Arch:00007" {
+                   filename "efi64/syslinux.efi";
+             }
+             #assign IP based on MAC address
+             # if you  have a need to setup DHCP for specific hosts 
+             host someserver {
+                  hardware ethernet 00:15:5d:00:8a:3d; # change to your MAC address. 
+                  fixed-address 192.168.100.250;
+                  option host-name "someserver";
+              }
+          }
+
+    - name: Restart DHCP server
+      service:
+        name: dhcpd
+        state: restarted
+
+
+- name: Host ISO and mount it
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Create directory for ISO
+      file:
+        path: /srv/tftp/iso
+        state: directory
+
+    - name: Create directory for ISO mount
+      file:
+        path: /srv/isoubuntu
+        state: directory
+
+    - name: Mount ISO file
+      mount:
+        path: /srv/isoubuntu
+        src: /srv/tftp/iso/ubuntu-20.04.6-live-server-amd64.iso
+        fstype: iso9660
+        opts: loop,ro
+        state: mounted
+
+    - name: List contents of the mounted ISO
+      shell: ls /srv/isoubuntu
