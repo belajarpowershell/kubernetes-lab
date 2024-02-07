@@ -19,6 +19,8 @@ Follow the sequence number in the files , this will ensure that all the required
 
 # This script will pull the specific folder/srv from the git repository and move the contents to the /srv on alpine1.
 
+# install git 
+apk add git
 
 # initialize a new folder
 git init kubernetes-lab

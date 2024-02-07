@@ -86,7 +86,13 @@ pass: 123
 This screen will appear , take note of the login prompt **'alpine1'**. Indicating the installation is completed.
 
 ![alt text](./../screenshots/Alpine1-screenshots/vmconnect_odjAAmfYDN.png)
+
+
+
+
+
 ## Connect via ssh
+
 If you don't already know the Hyper-V console is not able to perform copy and paste operations. Via a terminal connection copy and paste functions make it easier to paste commands , especially the long ones.
 At this time the Hyper-V host does not have an IP in the `Private Subnet 192.168.100.0/24` . We cannot test the SSH at this time.
 We can test this when DHCP is setup later on.
