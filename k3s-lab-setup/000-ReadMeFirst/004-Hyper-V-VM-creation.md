@@ -23,4 +23,4 @@ To use this script:-
 1. Hyper-V VM Memory needs to be at minimum 1GB. Any lower the Ubuntu will fail to install. Wasted a few days to catch this. 
 2. If you are using the download ISO to memory then you need to have a minimum of 4GB on the Hyper-V VM  to load the ISO to memory. 
 
-#### Once the Virtual Machines are created proceed to `100-alpine1` steps.
+#### Once the Virtual Machines are created proceed to `100-alpine1-setup` steps.

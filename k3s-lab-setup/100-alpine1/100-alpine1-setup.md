@@ -52,7 +52,7 @@ DNS Servers :
 Timezone :[Singpore]
 Proxy :[none]
 ntp: default [chrony]  #if it takes long to complete , make sure ipv6 is disabled
-Mirror :[f] # Detect and add fastest mirror
+Mirror :[r] # select random from list
 setup user : [no]
 Which ssh server? [openssh]
 allow root ssh login: [yes]
@@ -62,7 +62,10 @@ Disk Mode How would you like to use it ? [sys]
 Erase the above disks and continue? [y]
 ```
 
+
+
 ## Installation begins.
+
 Once the installation is completed you will see the notice to reboot.
 Before rebooting, change the boot sequence in Hyper-V for alpine1 to be Hard Drive first.
 
