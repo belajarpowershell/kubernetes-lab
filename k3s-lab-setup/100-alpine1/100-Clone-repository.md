@@ -1,12 +1,6 @@
 # Kubernetes Lab Setup
 
-This repository contains the relevant steps to setup 2  Lightweight Kubernetes ( k3s) a single node and a High Available Cluster.
-
-The objective of this lab is to be able to rebuild the clusters very quickly as this is for testing services and applications. 
-
-Files required for the setup can be extracted from the git repository from the script below.
-
-Follow the sequence number in the files , this will ensure that all the required services are setup.
+In this step we will download the 
 
 #####  This script is to download the folder /srv from the Repository https://github.com/belajarpowershell/kubernetes-lab
 
@@ -22,29 +16,21 @@ Follow the sequence number in the files , this will ensure that all the required
 # install git 
 apk add git
 
-# initialize a new folder
-git init kubernetes-lab
+# clone the repository
+git clone https://github.com/belajarpowershell/kubernetes-lab.git
+
 # change folder
 cd kubernetes-lab
-# add git repository to folder. 
-git remote add origin https://github.com/belajarpowershell/kubernetes-lab.git
-# enable sparsecheckout
-git config core.sparsecheckout true
-# specify folder to pull
-echo "srv/*" >> .git/info/sparse-checkout
 
-# pull files locally.
-git pull --depth=1 origin main
+# move the `srv` from git folder "kubernetes-lab/" to "/srv" 
+# change the script to executable
+chmod +x move-srv-files2root.sh
 
-#create folder /srv if not already existing.
-[ -d "/srv" ] || mkdir -p /srv && echo "Created /srv directory" || echo "/srv directory already exists"
+#run the script 
+./move-srv-files2root.sh
 
-
-# move files to the /srv folder.
-mv srv/* /srv
-echo " files moved to /srv " 
-echo " script completed"
-
+# files `kubernetes-lab/srv` folder is now moved to /srv
+# this is important as the files required for the setup must be located at `/srv/`
 
 ```
 

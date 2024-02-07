@@ -1,22 +1,4 @@
-## Ansible setup 
-
-**Step 1**. Update official Alpine packages.
-
-```
-sudo apk update
-```
-
-**Step 2**. Install Ansible.
-
-```
-sudo apk add ansible
-```
-
-**Step 3**. Verify installation.
-
-```
-ansible --version
-```
+## Ansible k3s setup 
 
 
 

@@ -8,3 +8,17 @@
 mv srv/* /srv
 echo " files moved to /srv " 
 echo " script completed"
+
+
+# enable the community repository to install ansible
+# Define the file path
+repo_file="/etc/apk/repositories"
+
+# Check if the repository line is commented out
+if grep -q '^#.*\/community$' "$repo_file"; then
+    # Remove the comment from the line
+    sed -i 's/^#\(.*\/community\)$/\1/' "$repo_file"
+    echo "Community repository enabled."
+else
+    echo "Community repository already enabled or not found."
+fi
