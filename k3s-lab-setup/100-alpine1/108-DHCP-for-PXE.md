@@ -1,4 +1,4 @@
-## DHCP options to provide PXE boot information to clients.
+## DHCP options for PXE boot 
 
 The initial DHCP was to provide IP addresses to remote clients. 
 As we now want to provide the scope options for the tftp servers with the boot file location, lets make the following changes.

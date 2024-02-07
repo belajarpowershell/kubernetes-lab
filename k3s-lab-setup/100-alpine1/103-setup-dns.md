@@ -91,10 +91,10 @@ To validate you need to run nslookup on a remote server.
 As there are no other servers setup, this can be validated when the VM's are created.
 
 ```
-To ensure alpine1 resolves the FQDN's correctly ensure the following is configured 
+To ensure `alpine1` resolves the FQDN's correctly ensure the following is configured 
 
 ```
-# run command to check Network interface configuration
+# on `alpine1`  run command to check Network interface configuration
 vi /etc/network/interfaces
 
 auto lo

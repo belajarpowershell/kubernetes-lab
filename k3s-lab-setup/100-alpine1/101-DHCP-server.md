@@ -58,8 +58,8 @@ cat /var/lib/dhcp/dhcpd.leases
 
 ## Steps to ssh.
 
-If using DHCP, the gateway is also assigned to my Hyper-V host nic.
-THis caused some network issues where my connection to the internet kept timing out. When I set the IP address without the Gateway the network issues were no longer present. 
+If using DHCP, the gateway is also assigned to my Hyper-V host Network Interface.
+This caused some network issues where my connection to the internet kept timing out. When I set the IP address without the Gateway the network issues were no longer present. 
 So better to set the IP address manualy then obtain via DHCP.
 
 Paste the following Powershell code int Windows Terminal as Administrator.

@@ -11,7 +11,9 @@ This lab setup guide is only the beginning, there are so many things that you ca
 There is so much that you need to learn. Here are a few to get you started.
 
 1. Install and configure ArgoCD 
-2. Install and configure Prometheus
+2. Deploy Prometheus using ArgoCD
 3. Install Velero Backup.
 
 There are so many applications you can test [CNCF native projects to try out](https://www.cncf.io/projects/)
+
+If time permits I will  provide more setup references .

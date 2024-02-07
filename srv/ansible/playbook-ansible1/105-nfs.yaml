@@ -1,0 +1,93 @@
+---
+- name: Configure NFS server and mount ISO on localhost
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Create folder to download ISO
+      file:
+        path: /srv/tftp/iso
+        state: directory
+
+    - name: Download Ubuntu ISO
+      get_url:
+        url: https://releases.ubuntu.com/20.04.6/ubuntu-20.04.6-live-server-amd64.iso
+        dest: /srv/tftp/iso/ubuntu-20.04.6-live-server-amd64.iso
+
+    - name: Create folder to mount ISO file
+      file:
+        path: /srv/isoubuntu
+        state: directory
+
+    - name: Mount ISO file temporarily
+      mount:
+        path: /srv/isoubuntu
+        src: /srv/tftp/iso/ubuntu-20.04.6-live-server-amd64.iso
+        fstype: iso9660
+        opts: loop,ro
+        state: mounted
+
+    - name: Ensure ISO mount persists across reboots
+      lineinfile:
+        path: /etc/fstab
+        line: "/srv/tftp/iso/ubuntu-20.04.6-live-server-amd64.iso /srv/isoubuntu iso9660 loop 0 0"
+      notify: Reboot to validate ISO mount
+
+    - name: Install NFS utils
+      apk:
+        update_cache: yes
+        name: nfs-utils
+        state: present
+
+    - name: Add NFS to startup
+      command: rc-update add nfs
+
+    - name: Start NFS service
+      service:
+        name: rpcbind
+        state: started
+
+    - name: Start NFS service
+      service:
+        name: nfs
+        state: started
+
+    - name: Check NFS service status
+      command: rc-service nfs status
+
+    - name: Configure NFS exports
+      lineinfile:
+        path: /etc/exports
+        line: "/srv/isoubuntu 192.168.100.1/24(async,ro,no_subtree_check,no_root_squash)"
+      notify: Refresh NFS exports
+
+    - name: Refresh NFS exports
+      command: exportfs -arv
+
+    - name: Create directory for NFS mount test
+      file:
+        path: /mntnfs
+        state: directory
+
+    - name: Mount NFS share
+      mount:
+        path: /mntnfs
+        src: "192.168.100.1:/srv/isoubuntu"
+        fstype: nfs
+        state: mounted
+
+    - name: Check mounted files
+      shell: ls /mntnfs/
+      register: mount_output
+
+    - debug:
+        msg: "Files in mounted NFS share: {{ mount_output.stdout_lines }}"
+
+  handlers:
+    - name: Reboot to validate ISO mount
+      command: reboot
+      async: 1
+      poll: 0
+      ignore_errors: true
+
+    - name: Refresh NFS exports
+      command: exportfs -arv

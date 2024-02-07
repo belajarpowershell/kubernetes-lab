@@ -1,0 +1,95 @@
+---
+- name: Configure Bind DNS server on alpine1
+  hosts: alpine1
+  become: true
+  tasks:
+    - name: Install bind and bind-tools
+      apk:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - bind
+        - bind-tools
+
+    - name: Add named service to startup
+      command: rc-update add named default
+
+    - name: Check if dig and nslookup are installed
+      command: "{{ item }}"
+      loop:
+        - dig -v
+        - nslookup -v
+
+    - name: Create named.conf file
+      file:
+        path: /etc/bind/named.conf
+        state: touch
+
+    - name: Add configuration to named.conf file
+      blockinfile:
+        path: /etc/bind/named.conf
+        block: |
+          options {
+               listen-on port 53 { 127.0.0.1; 192.168.100.1; };
+               forwarders { 8.8.8.8; 8.8.4.4; };
+               directory "/var/bind";
+               dump-file "/var/bind/data/cache_dump.db";
+               statistics-file "/var/bind/data/named_stats.txt";
+               memstatistics-file "/var/bind/data/named_mem_stats.txt";
+               allow-query { localhost; 192.168.100.0/24; };
+               recursion yes;
+          };
+          zone "k8s.lab" IN {
+                  type master;
+                  file "/etc/bind/master/k8s.lab";
+          };
+      delegate_to: localhost
+
+    - name: Create directory for master zone file
+      file:
+        path: /etc/bind/master/
+        state: directory
+
+    - name: Create and configure master zone file
+      copy:
+        content: |
+          $TTL 38400
+          @ IN SOA ns.k8s.lab admin.k8s.lab. (
+          2       ;Serial
+          600     ;Refresh
+          300     ;Retry
+          60480   ;Expire
+          600 )   ;Negative Cache TTL
+
+          @       IN      NS      ns1.k8s.lab.
+          ns1     IN      A       192.168.100.1
+          alpine1         IN      A       192.168.100.1
+          k8s-ha-cluster  IN      A       192.168.100.201
+          loadbalancer    IN      A       192.168.100.201
+          master1         IN      A       192.168.100.202
+          master2         IN      A       192.168.100.203
+          master3         IN      A       192.168.100.204
+          worker1         IN      A       192.168.100.205
+          worker2         IN      A       192.168.100.206
+          worker3         IN      A       192.168.100.207
+          xsinglenode     IN      A       192.168.100.199
+        dest: /etc/bind/master/k8s.lab
+
+    - name: Check named.conf syntax
+      command: named-checkconf /etc/bind/named.conf
+
+    - name: Restart named service
+      service:
+        name: named
+        state: restarted
+
+    - name: Add nameserver to /etc/resolv.conf
+      lineinfile:
+        path: /etc/resolv.conf
+        line: "{{ item }}"
+      loop:
+        - nameserver 192.168.100.1
+        - search k8s.lab
+
+    - name: Set immutable flag for /etc/resolv.conf
+      command: chattr +i /etc/resolv.conf

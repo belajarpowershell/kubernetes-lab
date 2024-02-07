@@ -1,0 +1,38 @@
+---
+- name: Configure DHCP server on localhost
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Install dhcp package
+      apk:
+        name: dhcp
+        state: present
+
+    - name: Create dhcpd.conf file
+      file:
+        path: /etc/dhcp/dhcpd.conf
+        state: touch
+
+    - name: Add dhcpd configuration
+      blockinfile:
+        path: /etc/dhcp/dhcpd.conf
+        block: |
+          subnet 192.168.100.0 netmask 255.255.255.0 {
+            range 192.168.100.100 192.168.100.200;
+            option domain-name-servers 192.168.100.1;
+            option routers 192.168.100.1;
+          }
+      delegate_to: localhost
+
+    - name: Set dhcpd to start at boot
+      command: rc-update add dhcpd default
+
+    - name: Start the dhcpd service
+      service:
+        name: dhcpd
+        state: started
+
+    - name: Check dhcpd service status
+      service:
+        name: dhcpd
+        state: status

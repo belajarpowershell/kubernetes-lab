@@ -1,7 +1,7 @@
 #### Configure the boot menu `pxelinux.cfg/default`
 The final piece is to prepare the boot menu to load and present a selection that will install the Ubuntu OS.
 
-The `syslinux-6.04-pre1-PXE-specific.tar` already contains the `pxelinux.cfg/default` that is working. Lets do this manually.
+This file is already with the configuration below.
 
 Validate the file content of `pxelinux.cfg/default` matches the code below.
 ```

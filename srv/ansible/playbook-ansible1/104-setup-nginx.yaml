@@ -1,0 +1,32 @@
+---
+- name: Configure Nginx on alpine1
+  hosts: alpine1
+  become: true
+  tasks:
+    - name: Update APK package cache
+      apk:
+        update_cache: yes
+
+    - name: Install Nginx package
+      apk:
+        name: nginx
+        state: present
+
+    - name: Add Nginx service to startup
+      command: rc-update add nginx default
+
+    - name: Check Nginx service status
+      command: rc-service nginx status
+
+    - name: Start Nginx service
+      service:
+        name: nginx
+        state: started
+
+    - name: Check Nginx configuration syntax
+      command: nginx -t
+
+    - name: Reload Nginx service
+      service:
+        name: nginx
+        state: reloaded

@@ -22,7 +22,7 @@ If you have issues with IPv6, do disable before proceeding.
 
 ```
 vi /etc/sysctl.conf
-# Manualy type in the followingf
+# Manualy type in the following
 # press [i] to be in insert /edit mode
 
 net.ipv6.conf.all.disable_ipv6 = 1

@@ -20,7 +20,7 @@
 - Internet Router This server has 2 NIC one for the Internet access and another on the subnet `192.168.100.0/24`
 - DNS
 - NGINX web server
-- (removed)NFS server
+- NFS server
 - TFTP server
 - Hosting the various files required for the Ubuntu and Kubernetese setup
 

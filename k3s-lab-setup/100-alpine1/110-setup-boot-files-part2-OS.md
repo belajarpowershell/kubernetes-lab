@@ -12,7 +12,7 @@ In this section we will perform 2 tasks
 # lets host the ISO in the folder /iso
 mkdir -p /srv/tftp/iso
 # Download the ISO
-wget -P /srv/tftp/iso https://releases.ubuntu.com/20.04.6/ubuntu-20.04.6-live-server-amd64.iso
+[ ! -f /srv/tftp/iso/ubuntu-20.04.6-live-server-amd64.iso ] && wget -P /srv/tftp/iso https://releases.ubuntu.com/20.04.6/ubuntu-20.04.6-live-server-amd64.iso
 
 # Create mount folder 
 mkdir -p /srv/isoubuntu

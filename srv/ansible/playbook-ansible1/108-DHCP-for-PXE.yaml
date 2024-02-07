@@ -1,0 +1,35 @@
+---
+- name: Configure DHCP server
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Create DHCP configuration file
+      blockinfile:
+        path: /etc/dhcp/dhcpd.conf
+        block: |
+          subnet 192.168.100.0 netmask 255.255.255.0 {
+             range 192.168.100.50 192.168.100.100;
+             option routers 192.168.100.1;
+             option domain-name-servers 192.168.100.1;
+             option time-servers 192.168.100.1;
+             option ntp-servers 192.168.100.1;
+             # next-server 192.168.100.1; # this is typically if the tftp is on another server.
+             if substring(option vendor-class-identifier, 0, 20) = "PXEClient:Arch:00000" {
+                   filename "bios/pxelinux.0";
+             }
+             if substring(option vendor-class-identifier, 0, 20) = "PXEClient:Arch:00007" {
+                   filename "efi64/syslinux.efi";
+             }
+             #assign IP based on MAC address
+             # if you  have a need to setup DHCP for specific hosts 
+             host someserver {
+                  hardware ethernet 00:15:5d:00:8a:3d; # change to your MAC address. 
+                  fixed-address 192.168.100.250;
+                  option host-name "someserver";
+              }
+          }
+
+    - name: Restart DHCP server
+      service:
+        name: dhcpd
+        state: restarted
