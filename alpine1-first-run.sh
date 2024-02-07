@@ -7,7 +7,6 @@
 # move files to the /srv folder.
 mv srv/* /srv
 echo " files moved to /srv " 
-echo " script completed"
 
 
 # enable the community repository to install ansible
@@ -22,3 +21,11 @@ if grep -q '^#.*\/community$' "$repo_file"; then
 else
     echo "Community repository already enabled or not found."
 fi
+
+echo " Community repository enabled"
+
+# Setup ansible 
+
+apk add ansible 
+
+echo " script completed"
