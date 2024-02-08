@@ -1,6 +1,6 @@
 ---
 - name: Configure Bind DNS server on alpine1
-  hosts: alpine1
+  hosts: localhost
   become: true
   tasks:
     - name: Install bind and bind-tools
@@ -13,12 +13,6 @@
 
     - name: Add named service to startup
       command: rc-update add named default
-
-    - name: Check if dig and nslookup are installed
-      command: "{{ item }}"
-      loop:
-        - dig -v
-        - nslookup -v
 
     - name: Create named.conf file
       file:
@@ -74,9 +68,6 @@
           worker3         IN      A       192.168.100.207
           xsinglenode     IN      A       192.168.100.199
         dest: /etc/bind/master/k8s.lab
-
-    - name: Check named.conf syntax
-      command: named-checkconf /etc/bind/named.conf
 
     - name: Restart named service
       service:

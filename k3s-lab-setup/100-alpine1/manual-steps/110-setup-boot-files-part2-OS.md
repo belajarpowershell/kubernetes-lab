@@ -24,16 +24,16 @@ ls /srv/isoubuntu
 
 ```
 
-![alt text](./../screenshots/Alpine1-screenshots/mount-ubuntu-iso.png)
+![alt text](./../../screenshots/Alpine1-screenshots/mount-ubuntu-iso.png)
 
 **Validate if accessible via HTTP** 
 
 As we have already setup `nginx` to list directory content. This should be visible via browser.
 
-![alt text](./../screenshots/Alpine1-screenshots/browser-list-isoubuntu-content.png)
+![alt text](./../../screenshots/Alpine1-screenshots/browser-list-isoubuntu-content.png)
 Click `tftp` and `iso` to list the ISO LiveCD.
 
-![alt text](./../screenshots/Alpine1-screenshots/browser-iso-ubuntu.png)
+![alt text](./../../screenshots/Alpine1-screenshots/browser-iso-ubuntu.png)
 
 ## Step 2 Extract `vmlinuz` and `initrd`
 
@@ -62,7 +62,7 @@ cp  /srv/isoubuntu/casper/initrd /srv/tftp/ubuntu/casper
 The boot files will be served via http. Do validate if this folder and content is listed.
 
 
- ![alt text](./../screenshots/Alpine1-screenshots/browser-list-casper.png)
+ ![alt text](./../../screenshots/Alpine1-screenshots/browser-list-casper.png)
 
 
  ## Next step

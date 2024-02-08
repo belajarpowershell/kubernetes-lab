@@ -3,14 +3,6 @@
   hosts: localhost
   become: true
   tasks:
-    - name: Enable community repository
-      lineinfile:
-        path: /etc/apk/repositories
-        regexp: '^#http://mirror.jingk.ai/alpine/v3.18/community'
-        line: 'http://mirror.jingk.ai/alpine/v3.18/community'
-        state: present
-        backup: yes
-
     - name: Update APK package cache
       apk:
         update_cache: yes

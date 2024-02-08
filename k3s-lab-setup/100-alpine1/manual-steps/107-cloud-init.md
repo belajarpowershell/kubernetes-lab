@@ -27,7 +27,7 @@ You can test this if you have a `user-data` file handy. The `user-data` will be 
 cloud-init schema --config-file user-data
 ```
 My error was to put in an entry for remark that was not recognized. 
-![alt text](./../screenshots/Alpine1-screenshots/cloud-init_validate_user-data.png)
+![alt text](./../../screenshots/Alpine1-screenshots/cloud-init_validate_user-data.png)
 
 
 ## Next step

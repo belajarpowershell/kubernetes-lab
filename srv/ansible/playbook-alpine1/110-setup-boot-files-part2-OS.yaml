@@ -8,12 +8,6 @@
         path: /srv/tftp/iso
         state: directory
 
-    - name: Download Ubuntu ISO if not already present
-      get_url:
-        url: https://releases.ubuntu.com/20.04.6/ubuntu-20.04.6-live-server-amd64.iso
-        dest: /srv/tftp/iso/ubuntu-20.04.6-live-server-amd64.iso
-      when: not ansible_local['file']['exists']('/srv/tftp/iso/ubuntu-20.04.6-live-server-amd64.iso')
-
     - name: Create directory for ISO mount
       file:
         path: /srv/isoubuntu

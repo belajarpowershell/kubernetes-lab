@@ -73,7 +73,7 @@ http://192.168.100.1
 The list of files hosted in `/srv/autoinstall/` will be listed.
 ```
 Here is and example
-![alt text](./../screenshots/Alpine1-screenshots/browser-list-files-update.png)
+![alt text](./../../screenshots/Alpine1-screenshots/browser-list-files-update.png)
 
 `nginx` can also be deployed using `Docker`, I will provide the steps at a later version
 

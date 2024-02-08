@@ -1,6 +1,6 @@
 ---
 - name: Configure IP forwarding and enable IP routing on alpine1
-  hosts: alpine1
+  hosts: localhost
   become: true
   tasks:
     - name: Enable IP forwarding in sysctl.conf

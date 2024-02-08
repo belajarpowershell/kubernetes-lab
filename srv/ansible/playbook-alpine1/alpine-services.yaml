@@ -7,7 +7,10 @@
       apk:
         name: dhcp
         state: present
-
+    - name: Create /etc/dhcp
+      file:
+        path: /etc/dhcp/
+        state: directory
     - name: Create dhcpd.conf file
       file:
         path: /etc/dhcp/dhcpd.conf

@@ -1,17 +1,16 @@
-# Kubernetes Lab Setup
+# Clone the repository
 
-In this step we will download the 
+In this step we will download the files required for 
 
 #####  This script is to download the folder /srv from the Repository https://github.com/belajarpowershell/kubernetes-lab
 
 ```
-# create a file download-srv.sh with below contents on `alpine1`
-# run following command to make this executable
-# chmod +x download-srv.sh
-# run the script
-# ./download-srv.sh 
-
-# This script will pull the specific folder/srv from the git repository and move the contents to the /srv on alpine1.
+# Step 1 clone the repository
+# Step 2 run the script `alpine1-first-run.sh`
+# This script will perform the following
+# - move the `srv` from git folder "kubernetes-lab/" to "/srv" 
+# - enable the community repository to install ansible
+# - install Ansible using run `apk add ansible`
 
 # install git 
 apk add git
@@ -24,15 +23,20 @@ cd kubernetes-lab
 
 # move the `srv` from git folder "kubernetes-lab/" to "/srv" 
 # change the script to executable
-chmod +x move-srv-files2root.sh
+chmod +x alpine1-first-run.sh
+
 
 #run the script 
-./move-srv-files2root.sh
+./alpine1-first-run.sh
 
 # files `kubernetes-lab/srv` folder is now moved to /srv
 # this is important as the files required for the setup must be located at `/srv/`
 
 ```
+
+
+
+
 
 ## Folder Structure
 
@@ -49,7 +53,9 @@ chmod +x move-srv-files2root.sh
       - copy-ssh-key.sh
       - hosts.ini
     - ansible/
-      - playbook
+      - playbook-ansible1
+        - 
+      - playbook-k3s
         - .kube/
         - j2/
 

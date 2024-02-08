@@ -28,7 +28,7 @@ Click on the `Green Play` button, this will execute the script.
 
 The generated files are in the subfolder  `.\autoinstall\`
 
-![114-01-location-of-script](./../screenshots\114-01-location-of-script.png)
+![114-01-location-of-script](./../../screenshots\114-01-location-of-script.png)
 
 
 
@@ -46,7 +46,7 @@ Copy the files created to the folder
 
 
 
-![114-02-wsftp-cp-autoinstall](./..\screenshots\114-02-wsftp-cp-autoinstall.png)
+![114-02-wsftp-cp-autoinstall](./../..\screenshots\114-02-wsftp-cp-autoinstall.png)
 
 
 
@@ -58,7 +58,7 @@ Validate by browsing `http://192.168.100.1/`
 
 
 
-![114-03-list-autoinstall-in-browser](./..\screenshots\114-03-list-autoinstall-in-browser.png)
+![114-03-list-autoinstall-in-browser](./../../screenshots\114-03-list-autoinstall-in-browser.png)
 
 // To update Video of Script generation and the Ubuntu setup.
 

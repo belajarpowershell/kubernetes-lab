@@ -32,7 +32,3 @@
         name: dhcpd
         state: started
 
-    - name: Check dhcpd service status
-      service:
-        name: dhcpd
-        state: status

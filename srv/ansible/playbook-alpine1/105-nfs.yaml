@@ -8,16 +8,6 @@
         path: /srv/tftp/iso
         state: directory
 
-    - name: Download Ubuntu ISO
-      get_url:
-        url: https://releases.ubuntu.com/20.04.6/ubuntu-20.04.6-live-server-amd64.iso
-        dest: /srv/tftp/iso/ubuntu-20.04.6-live-server-amd64.iso
-
-    - name: Create folder to mount ISO file
-      file:
-        path: /srv/isoubuntu
-        state: directory
-
     - name: Mount ISO file temporarily
       mount:
         path: /srv/isoubuntu
@@ -25,12 +15,6 @@
         fstype: iso9660
         opts: loop,ro
         state: mounted
-
-    - name: Ensure ISO mount persists across reboots
-      lineinfile:
-        path: /etc/fstab
-        line: "/srv/tftp/iso/ubuntu-20.04.6-live-server-amd64.iso /srv/isoubuntu iso9660 loop 0 0"
-      notify: Reboot to validate ISO mount
 
     - name: Install NFS utils
       apk:
@@ -50,9 +34,6 @@
       service:
         name: nfs
         state: started
-
-    - name: Check NFS service status
-      command: rc-service nfs status
 
     - name: Configure NFS exports
       lineinfile:
@@ -83,11 +64,11 @@
         msg: "Files in mounted NFS share: {{ mount_output.stdout_lines }}"
 
   handlers:
-    - name: Reboot to validate ISO mount
-      command: reboot
-      async: 1
-      poll: 0
-      ignore_errors: true
+    # - name: Reboot to validate ISO mount
+    #   command: reboot
+    #   async: 1
+    #   poll: 0
+    #   ignore_errors: true
 
     - name: Refresh NFS exports
       command: exportfs -arv

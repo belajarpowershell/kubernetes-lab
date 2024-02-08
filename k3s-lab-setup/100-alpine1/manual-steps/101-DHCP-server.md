@@ -76,11 +76,11 @@ Run this command on Windows Terminal to check if an IP has been assigned
 ```
 get-netipaddress -InterfaceIndex (Get-NetAdapter | Where-Object { $_.Name -like "*192.168.100.0*" }).InterfaceIndex
 ```
-![alt text](./../screenshots/Alpine1-screenshots/WindowsTerminal_checkIP.png)
+![alt text](./../../screenshots/Alpine1-screenshots/WindowsTerminal_checkIP.png)
 
 Troubleshooting.
-- check if the DHCP server is running.
 - If that is working, then review the IP address ranges assigned to ensure they are correct and check for typos in the IP address.
+- Ensure only one gateway IP address is assigned. Having multiple gateways will introduce connectivity issues.
 
 ## How to identify the IP address on a linux machine?
 At the prompt type.
@@ -88,7 +88,7 @@ At the prompt type.
   ip a 
 ```
 Here is an example 
-![alt text](./../screenshots/Alpine1-screenshots/alpine-get-ip-address.png)
+![alt text](./../../screenshots/Alpine1-screenshots/alpine-get-ip-address.png)
 
 ## How to SSH to a Linux Machine?
 
@@ -106,7 +106,7 @@ From Windows Terminal type the following command. You will be presented with a l
 ssh -l root 192.168.100.1
 Password : `123` # if the proposed Password was used
 ```
-![alt text](./../screenshots/Alpine1-screenshots/WindowsTerminal_ssh-alpine1.png)
+![alt text](./../../screenshots/Alpine1-screenshots/WindowsTerminal_ssh-alpine1.png)
 
 
 # DHCP is installed and SSH to `alpine1` server established.

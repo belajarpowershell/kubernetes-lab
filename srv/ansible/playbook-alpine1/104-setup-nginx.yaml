@@ -1,6 +1,6 @@
 ---
 - name: Configure Nginx on alpine1
-  hosts: alpine1
+  hosts: localhost
   become: true
   tasks:
     - name: Update APK package cache
@@ -15,17 +15,34 @@
     - name: Add Nginx service to startup
       command: rc-update add nginx default
 
-    - name: Check Nginx service status
-      command: rc-service nginx status
-
     - name: Start Nginx service
       service:
         name: nginx
         state: started
+    - name: Remove default nginx configuration file
+      file:
+        path: /etc/nginx/http.d/default.conf
+        state: absent
 
+    - name: Add dhcpd configuration
+      blockinfile:
+        path: /etc/dhcp/dhcpd.conf
+        block: |
+          server {
+              server_name localhost;
+              root /srv/;
+              #index index.html;
+              location / {  # new url path # this is the URL path on browser
+            alias /srv/; # directory to list
+              #in this case http://ip/ will list files in "/srv/"
+              # this might not be best practice, but this is a Lab setup 
+            autoindex on;
+              }
+          }
+      delegate_to: localhost
     - name: Check Nginx configuration syntax
       command: nginx -t
-
+      
     - name: Reload Nginx service
       service:
         name: nginx
