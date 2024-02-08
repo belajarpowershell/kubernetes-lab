@@ -13,13 +13,13 @@ LABEL ubuntu-iso-remote #iso downloaded from http. Requires 4GB of Memory
     append url=http://192.168.100.1/tftp/iso/ubuntu-20.04.6-live-server-amd64.iso autoinstall ds=nocloud-net;s=http://192.168.100.1/autoinstall/ ip=dhcp fsck.mode=skip ---
 
 LABEL ubuntu-DVD-local (Ubuntu  DVD locally mounted - 1GB Memory)
-    MENU LABEL ubuntu-iso-local (iso locally mounted 1GB of Memory)
+    MENU LABEL ubuntu-DVD-local (iso locally mounted 1GB of Memory)
     KERNEL http://192.168.100.1/tftp/ubuntu/casper/vmlinuz
     INITRD http://192.168.100.1/tftp/ubuntu/casper/initrd
     APPEND autoinstall ds=nocloud-net;s=http://192.168.100.1/autoinstall/ ip=dhcp fsck.mode=skip ---
 
 LABEL ubuntu-nfs-boot (Ubuntu  iso mounted on nfs - 1GB Memory)
-    MENU LABEL ubuntu-iso-local (iso locally mounted 1GB of Memory)
+    MENU LABEL ubuntu-nfs-boot (iso mounted on nfs 1GB of Memory)
     KERNEL http://192.168.100.1/tftp/ubuntu/casper/vmlinuz
     INITRD http://192.168.100.1/tftp/ubuntu/casper/initrd
     APPEND netboot=nfs boot=casper root=/dev/nfs nfsroot=192.168.100.1:/srv/isoubuntu autoinstall ds=nocloud-net;s=http://192.168.100.1/autoinstall/ ip=dhcp fsck.mode=skip ---

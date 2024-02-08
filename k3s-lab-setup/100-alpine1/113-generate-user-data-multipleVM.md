@@ -40,7 +40,7 @@ The generated files are in the subfolder  `.\autoinstall\`
 
 
 
-From the configuration in step `111-setup-boot-files-part3-pxelinux.cfg`  ( refer to manual step 111) , the Boot sequence is looking up the location. `http://192.168.100.1/autoinstall/`
+From the configuration in step `111-setup-boot-files-part3-pxelinux.cfg`  ( refer to manual step 11) , the Boot sequence is looking up the location. `http://192.168.100.1/autoinstall/`
 
 This is from the following code
 
@@ -48,25 +48,21 @@ This is from the following code
 APPEND netboot=nfs boot=casper root=/dev/nfs nfsroot=192.168.100.1:/srv/isoubuntu autoinstall 
 ```
 
-Copy the files created to the folder 
+#### Copy autoinstall files to `alpine1`
 
-` /srv/autoinstall/` on the `alpine1` server. The duplicate file with the node name is workaround to show the hostname of the specific file. As I did not find away to identify the hostname using the Ubuntu autoinstall method.
+Using [WinSCP](https://winscp.net/eng/download.php) copy the files created to the folder  `/srv/autoinstall/` on the `alpine1` server. The duplicate file with the node name is workaround to show the hostname of the specific file. 
 
-
-
-![114-02-wsftp-cp-autoinstall](./../screenshots\114-02-wsftp-cp-autoinstall.png)
+![114-02-wsftp-cp-autoinstall](./../screenshots\113-02-wsftp-cp-autoinstall.png)
 
 
 
-If you recall from 104-setup-nginx, the folder /srv/ was exposed to be visible from `http://192.168.100.1/`. All folders created in `/srv/` will be listed via the browser.
-
-Copy the files using WSFTP or some other method . 
+From step `104-setup-nginx`( refer to manual steps), the folder /srv/ was exposed to be visible from `http://192.168.100.1/`. All folders created in `/srv/` will be listed via the browser.
 
 Validate by browsing `http://192.168.100.1/`
 
 
 
-![114-03-list-autoinstall-in-browser](./../../screenshots\114-03-list-autoinstall-in-browser.png)
+![114-03-list-autoinstall-in-browser](./../screenshots\114-03-list-autoinstall-in-browser.png)
 
 // To update Video of Script generation and the Ubuntu setup.
 
@@ -74,5 +70,8 @@ Validate by browsing `http://192.168.100.1/`
 
 #### Lessons Learnt
 
-The MAC addresses for a newly created Hyper-V VM is not generated until its started at least once. 
+- The MAC addresses for a newly created Hyper-V Virtual Machine is not generated until its started at least once. 
+- the `meta-data` and`vendor-data` while empty must exist.
+
+
 

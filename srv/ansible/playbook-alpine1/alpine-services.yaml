@@ -403,3 +403,23 @@
 
     - name: List contents of the mounted ISO
       shell: ls /srv/isoubuntu
+- name: Copy Ubuntu Casper images
+  hosts: localhost
+  tasks:
+    - name: Create Ubuntu directory structure
+      file:
+        path: "/srv/tftp/ubuntu/casper"
+        state: directory
+        mode: 0755
+
+    - name: Copy vmlinuz to TFTP server
+      copy:
+        src: "/srv/isoubuntu/casper/vmlinuz"
+        dest: "/srv/tftp/ubuntu/casper/vmlinuz"
+        mode: 0644
+
+    - name: Copy initrd to TFTP server
+      copy:
+        src: "/srv/isoubuntu/casper/initrd"
+        dest: "/srv/tftp/ubuntu/casper/initrd"
+        mode: 0644

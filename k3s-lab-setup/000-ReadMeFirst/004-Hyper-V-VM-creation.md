@@ -16,8 +16,6 @@ To use this script:-
 
 [Here is a video that might help](https://clipchamp.com/watch/EYzyfDZUGRv)
 
-#### 
-
 #### Lessons Learned
 
 1. Hyper-V VM Memory needs to be at minimum 1GB. Any lower the Ubuntu will fail to install. Wasted a few days to catch this. 

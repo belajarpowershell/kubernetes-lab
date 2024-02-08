@@ -1,8 +1,8 @@
 # Clone the repository
 
-In this step we will download the files required for 
+In this step we will download the files required to setup the various services. We now clone the repository to `ansible1`.
 
-#####  This script is to download the folder /srv from the Repository https://github.com/belajarpowershell/kubernetes-lab
+#####  This script is to download the files  from the Repository https://github.com/belajarpowershell/kubernetes-lab
 
 ```
 # Step 1 clone the repository

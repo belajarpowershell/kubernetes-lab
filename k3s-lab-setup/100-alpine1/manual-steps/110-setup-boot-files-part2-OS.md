@@ -26,6 +26,32 @@ ls /srv/isoubuntu
 
 ![alt text](./../../screenshots/Alpine1-screenshots/mount-ubuntu-iso.png)
 
+
+
+#### Step 2 Extract `vmlinuz` and `initrd`
+
+Run the commands below to extract the boot files.
+
+```
+#create ubuntu folder to store the boot files.
+# this way we can have boot files for multple distros if required.
+mkdir -p /srv/tftp/ubuntu/casper
+
+# copy files
+cp  /srv/isoubuntu/casper/vmlinuz /srv/tftp/ubuntu/casper
+cp  /srv/isoubuntu/casper/initrd /srv/tftp/ubuntu/casper
+```
+
+**Validate**
+The boot files will be served via http. Do validate if this folder and content is listed.
+
+
+ ![alt text](./../screenshots/Alpine1-screenshots/browser-list-casper.png)
+
+
+
+
+
 **Validate if accessible via HTTP** 
 
 As we have already setup `nginx` to list directory content. This should be visible via browser.
