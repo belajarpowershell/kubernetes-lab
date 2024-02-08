@@ -28,4 +28,7 @@ echo " Community repository enabled"
 
 apk add ansible 
 
+# download Ubuntu ISO
+[ ! -f /srv/tftp/iso/ubuntu-20.04.6-live-server-amd64.iso ] && wget -P /srv/tftp/iso https://releases.ubuntu.com/20.04.6/ubuntu-20.04.6-live-server-amd64.iso
+
 echo " script completed"
