@@ -40,7 +40,7 @@ The generated files are in the subfolder  `.\autoinstall\`
 
 
 
-From the configuration in step 112 ( refer to manual step 112) , the Boot sequence is looking up the location. `http://192.168.100.1/autoinstall/`
+From the configuration in step `111-setup-boot-files-part3-pxelinux.cfg`  ( refer to manual step 111) , the Boot sequence is looking up the location. `http://192.168.100.1/autoinstall/`
 
 This is from the following code
 
