@@ -1,12 +1,12 @@
-# this script moves files from git folder "kubernetes-lab/" to "/srv" 
+# this script copies files from git folder "kubernetes-lab/" to "/srv" 
 
 #create folder /srv if not already existing.
 [ -d "/srv" ] || mkdir -p /srv && echo "Created /srv directory" || echo "/srv directory already exists"
 
 
 # move files to the /srv folder.
-mv srv/* /srv
-echo " files moved to /srv " 
+cp srv/* /srv -r
+echo " files copied to /srv " 
 
 
 # enable the community repository to install ansible

@@ -190,10 +190,14 @@
       file:
         path: /etc/nginx/http.d/default.conf
         state: absent
+    - name: Create /etc/nginx/http.d/installfileserver.conf file
+      file:
+        path: /etc/nginx/http.d/installfileserver.conf
+        state: touch
 
     - name: Add dhcpd configuration
       blockinfile:
-        path: /etc/dhcp/dhcpd.conf
+        path: /etc/nginx/http.d/installfileserver.conf
         block: |
           server {
               server_name localhost;
@@ -343,6 +347,37 @@
         name: dhcpd
         state: restarted
 
+- name: Configure Nginx on alpine1
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Update APK package cache
+      apk:
+        update_cache: yes
+
+    - name: Install tftpd package
+      apk:
+        name: tftp-hpa
+        state: present
+
+    - name: Add in.tftpd service to startup
+      command: rc-update add in.tftpd
+
+    - name: Create /etc/conf.d/in.tftpd file
+      file:
+        path: /etc/conf.d/in.tftpd
+        state: touch
+
+    - name: Update INTFTPD_PATH in /etc/conf.d/in.tftpd
+      lineinfile:
+        path: /etc/conf.d/in.tftpd
+        regexp: '^INTFTPD_PATH='
+        line: 'INTFTPD_PATH="/srv/tftp/"'
+
+    - name: Start Nginx service
+      service:
+        name: in.tftpd
+        state: started
 
 - name: Host ISO and mount it
   hosts: localhost

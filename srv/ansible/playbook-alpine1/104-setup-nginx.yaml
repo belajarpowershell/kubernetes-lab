@@ -23,10 +23,13 @@
       file:
         path: /etc/nginx/http.d/default.conf
         state: absent
-
-    - name: Add dhcpd configuration
+    - name: Create /etc/nginx/http.d/installfileserver.conf file
+      file:
+        path: /etc/nginx/http.d/installfileserver.conf
+        state: touch
+    - name: Add nginx configuration
       blockinfile:
-        path: /etc/dhcp/dhcpd.conf
+        path: /etc/nginx/http.d/installfileserver.conf
         block: |
           server {
               server_name localhost;
