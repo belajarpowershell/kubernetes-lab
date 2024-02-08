@@ -14,11 +14,11 @@ We now have some manual tasks to create the `user-data-mac-address` file for eac
 
 For the following step, the Virtual Machines created must be started once to generate the mac-address.
 
-From PowerShell ISE  open `G:\kubernetes-lab\srv\scripts\get-hyperv-startVM.ps1`
+From PowerShell ISE  open `G:\kubernetes-lab\srv\scripts\hyper-v_Host\get-hyperv-start-stopVM.ps1`
 
 Click on the `Green Play` button, this will execute the script.
 
-This will start and then stop all the Virtual Machines . Ensure the Virtual Machine names are not changed. 
+This will start and then stop all the Virtual Machines ( Load⁎ , master⁎ , worker⁎  , ⁎single⁎  ). Ensure the Virtual Machine names are not changed. 
 
 You can also Start and Stop from the Hyper-V Console. 
 
@@ -30,7 +30,7 @@ You can also Start and Stop from the Hyper-V Console.
 
 For a Kubernetes cluster we will need multiple Virtual Machines. This will require multiple `user-data-mac-address` files to be created. Here I use PowerShell to generate the files.
 
-From PowerShell ISE  open `G:\kubernetes-lab\srv\scripts\get-hyperv-VM-mac.ps1`
+From PowerShell ISE  open `G:\kubernetes-lab\srv\scripts\hyper-v_Host\get-hyperv-VM-mac.ps1`
 
 Click on the `Green Play` button, this will execute the script.
 
@@ -40,7 +40,7 @@ The generated files are in the subfolder  `.\autoinstall\`
 
 
 
-From the configuration in step 112 , the Boot sequence is looking up the location. `http://192.168.100.1/autoinstall/`
+From the configuration in step 112 ( refer to manual step 112) , the Boot sequence is looking up the location. `http://192.168.100.1/autoinstall/`
 
 This is from the following code
 
@@ -54,7 +54,7 @@ Copy the files created to the folder
 
 
 
-![114-02-wsftp-cp-autoinstall](./../..\screenshots\114-02-wsftp-cp-autoinstall.png)
+![114-02-wsftp-cp-autoinstall](./../screenshots\114-02-wsftp-cp-autoinstall.png)
 
 
 

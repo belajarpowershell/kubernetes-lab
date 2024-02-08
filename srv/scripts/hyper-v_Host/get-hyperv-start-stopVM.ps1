@@ -29,7 +29,7 @@ foreach ($vm in $vms) {
       if (($vm.State -eq 'Running') -and ($vm.Name -like "master*" -or $vm.Name -like "worker*" -or $vm.Name -like "load*" -or $vm.Name -like "*single*")) {
         Write-Host $vm.Name +" stopping the VM "
         #Start-VM -Name $vm.Name
-        Stop-VM -Name $vm.Name
+        Stop-VM -Name $vm.Name -TurnOff
 
     } 
 
