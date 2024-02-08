@@ -21,7 +21,7 @@ git clone https://github.com/belajarpowershell/kubernetes-lab.git
 # change folder
 cd kubernetes-lab
 
-# move the `srv` from git folder "kubernetes-lab/" to "/srv" 
+# copy the `srv` from git folder "kubernetes-lab/" to "/srv" 
 # change the script to executable
 chmod +x alpine1-first-run.sh
 
@@ -29,7 +29,7 @@ chmod +x alpine1-first-run.sh
 #run the script 
 ./alpine1-first-run.sh
 
-# files `kubernetes-lab/srv` folder is now moved to /srv
+# files `kubernetes-lab/srv` folder is now copied to /srv
 # this is important as the files required for the setup must be located at `/srv/`
 
 ```
