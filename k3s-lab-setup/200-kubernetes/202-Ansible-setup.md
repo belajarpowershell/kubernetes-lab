@@ -27,7 +27,7 @@ k3s_cluster_name=k3s-cluster-77
 k3s_single_name=k3s-single-01
 
 [lb]
-loadbalancer ansible_host=192.168.100.201 #kubernetes_cluster_name=k3s-cluster-88
+loadbalancer ansible_host=192.168.100.201
 
 [master]
 master1 ansible_host=192.168.100.202
