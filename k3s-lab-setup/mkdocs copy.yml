@@ -1,0 +1,54 @@
+site_name: k3s-lab-setup
+site_url: https://example.com/
+extra_css:
+  - stylesheets/extra.css
+theme:
+  name: material
+  #name: ivory
+  #custom_dir: overrides
+# nav:
+#     - Home: index.md
+#     - Article: 001-Hyper-V-Host-Specification.md
+nav:
+  - Get started:
+      - index.md
+      - ReadMe.md
+  - Prerequisites:
+      - Hyper-V Specificatios : 000-Prerequisites/001-Hyper-V-Host-Specification.md
+      - High Level Design : 000-Prerequisites/002-High-Level-node-setup.md
+      - VI editor basics: 000-Prerequisites/002-vi-basics.md
+      - Clone Repository: 000-Prerequisites/003-clone-repository.md
+      - Hyper-V Virtual Machine creation: 000-Prerequisites/004-Hyper-V-VM-creation.md
+  - Management Server alpine1 setup:
+      - Install Alpine OS on VM alpine1: 100-alpine1\100-alpine1-setup.md
+      #- 100-alpine1\1000-Clone-repository (copy).md
+      - SSH : 100-alpine1\101-ssh-to-alpine1.md
+      - Clone-repository: 100-alpine1\102-Clone-repository.md
+      #- 100-alpine1\103-setup-using-ansible-manual.md
+      - Setup services using Ansible: 100-alpine1\103-setup-using-ansible.md
+      - Setup services Manual Steps:
+                - Install and Configure DHCP: 100-alpine1\manual-steps\101-DHCP-server.md
+                - Configure as a Router: 100-alpine1\manual-steps\102-setup-router.md
+                - Configure DNS server: 100-alpine1\manual-steps\103-setup-dns.md
+                - Install and Configure nginx: 100-alpine1\manual-steps\104-setup-nginx.md
+                - Install and Configure nfs: 100-alpine1\manual-steps\105-nfs.md
+                - Install and Configure tftpd: 100-alpine1\manual-steps\106-tftp.md
+                - Install and Configure cloud-init: 100-alpine1\manual-steps\107-cloud-init.md
+                - DHCP options for PXE boot: 100-alpine1\manual-steps\108-DHCP-for-PXE.md
+                - Setup boot files for PXELINUX: 100-alpine1\manual-steps\109-setup-boot-files-part1-PXE.md
+                - Setup Ubuntu OS Boot files: 100-alpine1\manual-steps\110-setup-boot-files-part2-OS.md
+                - Configure PXE Boot menu: 100-alpine1\manual-steps\111-setup-boot-files-part3-pxelinux.cfg.md
+                #- 100-alpine1\manual-steps\112-New-single-VM-setup-Ubuntu-autoinstall.md
+                - Install Ubuntu : 100-alpine1\manual-steps\113-generate-user-data-multipleVM.md
+      #- 100-alpine1\104-Validation.md
+      - Ubuntu Installation: 100-alpine1\113-Install-Ubuntu.md
+  - Lightweight Kubernetes Installation:
+      - 200-kubernetes\200-ReadMe.md
+      - 200-kubernetes\201-SSH-keys-setup.md
+      - 200-kubernetes\202-Setup-k3s-with-Ansible.md
+      - 200-kubernetes\204-k3s-setup-complete.md
+      - 200-kubernetes\manual-steps\202-Ansible-inventory.md
+      - 200-kubernetes\manual-steps\203-Setup-k3s-with-Ansible.md
+        # - 900-Explainers\PXELINUX.md
+        # - 900-Explainers\generate-user-data-multipleVM.md
+        # - 900-Explainers\generate-user-data-reference.md
