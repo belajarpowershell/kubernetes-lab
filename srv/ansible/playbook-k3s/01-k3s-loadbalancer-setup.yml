@@ -1,5 +1,5 @@
 ---
-- name: Install Docker on Ubuntu
+- name: Install Docker on Loadbalancer Ubuntu
   hosts: lb
   become: true
   tasks:

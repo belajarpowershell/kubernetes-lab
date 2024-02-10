@@ -1,5 +1,5 @@
 ---
-- name: Prereq Disable Firewalld, SELinux, Multipath, and Swap
+- name: Prereq Disable Firewalld, SELinux, Multipath, and Swap 
   hosts: single
   become: true
   

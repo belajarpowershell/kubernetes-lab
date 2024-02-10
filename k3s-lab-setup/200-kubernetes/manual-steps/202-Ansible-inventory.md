@@ -1,4 +1,4 @@
-## Ansible k3s setup 
+## Ansible k3s Inventory
 
 
 
@@ -56,8 +56,3 @@ worker
 #### Ansible Playbooks
 
 Ansible performs specific actions that are listed in a playbook. The Playbook specifies the server to execute the tasks. Each task will perform a specific function. The actual workings of Ansible is outside of the scope of this topic. But the relevant Playbooks and the steps to execute will be shared
-
-
-
-
-
