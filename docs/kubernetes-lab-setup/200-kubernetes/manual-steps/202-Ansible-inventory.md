@@ -1,8 +1,5 @@
-## Ansible k3s Inventory
+# Ansible Inventory
 
-
-
-#### Ansible Inventory
 
 The main element for Ansible is the inventory. The inventory stores the list of servers that Ansible can perform actions on. 
 

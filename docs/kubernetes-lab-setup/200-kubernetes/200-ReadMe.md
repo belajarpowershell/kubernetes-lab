@@ -10,7 +10,7 @@ Ansible was quite easy to pickup.  Ansible is not explained in detail here, but 
 
 ### Summary of the steps.
 
-1. ssh-keys 
+ 1. ssh-keys 
 
    ssh-keys are required to allow for automated installation, without this you will have to manualy key in your password or passphrase multiple times.
 
