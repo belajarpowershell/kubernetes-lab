@@ -14,10 +14,10 @@ do
     # Perform ssh-keyscan to gather SSH host key
     echo $server
 
-     ssh-keyscan -H "$server" >> ~/.ssh/known_hosts
+     ssh-keyscan "$server" >> ~/.ssh/known_hosts
 
     # Copy SSH public key to the server
-    sshpass -p $PASSWORD ssh-copy-id -i $ssh_key ubuntu@$server
+    sshpass -p $PASSWORD ssh-copy-id -f -i $ssh_key ubuntu@$server
 done
 
 
