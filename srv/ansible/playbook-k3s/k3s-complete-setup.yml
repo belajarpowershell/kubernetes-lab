@@ -587,3 +587,18 @@
         content: "{{ k3s_yaml | to_nice_yaml(indent=2) }}"
         dest: "/root/.kube/clusters/ctx-{{ cluster_name }}.yaml"
 
+
+- name: Generate kubeconfig file
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Ensure script is executable
+      become: true
+      file:
+        src: ~/kubernetes-lab/srv/ansible/generate_kubeconfig.sh  # Update with the correct path
+        dest: ~/kubernetes-lab/srv/ansible/generate_kubeconfig.sh  # Update with the correct path
+        mode: "+x"
+
+    - name: Run generate_kubeconfig.sh script
+      become: true
+      script: ~/kubernetes-lab/srv/ansible/generate_kubeconfig.sh  # Update with the correct path

@@ -74,7 +74,6 @@
       template:
         src: /srv/ansible/playbook-k3s/j2/nginx.conf.j2
         dest: /etc/nginx.conf
-      notify: Restart Docker
 
     - name: Run Nginx Docker container
       docker_container:
