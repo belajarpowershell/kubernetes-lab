@@ -595,10 +595,9 @@
     - name: Ensure script is executable
       become: true
       file:
-        src: ~/kubernetes-lab/srv/ansible/generate_kubeconfig.sh  # Update with the correct path
-        dest: ~/kubernetes-lab/srv/ansible/generate_kubeconfig.sh  # Update with the correct path
+        path: ~/kubernetes-lab/srv/ansible/playbook-k3s/generate_kubeconfig.sh  # Update with the correct path
         mode: "+x"
 
     - name: Run generate_kubeconfig.sh script
       become: true
-      script: ~/kubernetes-lab/srv/ansible/generate_kubeconfig.sh  # Update with the correct path
+      script: ~/kubernetes-lab/srv/ansible/playbook-k3s/generate_kubeconfig.sh  # Update with the correct path
