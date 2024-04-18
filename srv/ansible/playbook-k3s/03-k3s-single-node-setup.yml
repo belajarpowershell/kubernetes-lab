@@ -55,7 +55,7 @@
   gather_facts: false
 
   vars_files:
-    - /srv/ansible/playbook/ansible-vars.yml
+    - /srv/ansible/playbook-k3s/ansible-vars.yml
 
   tasks:
     - name: Get Load Balancer Hostname from Inventory ( singlenode hostname)

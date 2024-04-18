@@ -8,3 +8,5 @@
 frontmatter.json
 *frontmatter*s
 *draft*
+/srv/ansible/.kube/clusters/*.yaml
+/srv/ansible/.kube/*

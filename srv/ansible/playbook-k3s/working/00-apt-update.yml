@@ -1,9 +1,0 @@
-- name: run apt-update on all Ubuntu nodes
-  hosts: k3s_cluster
-  become: yes
-  tasks:
-    - name: apt
-      apt:
-        update_cache: yes
-        upgrade: 'yes'
-

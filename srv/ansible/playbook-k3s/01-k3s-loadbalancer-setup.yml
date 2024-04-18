@@ -70,12 +70,10 @@
         enabled: yes
 
 
-
-
-  #   - name: Install required Python library (requests)
-  #     apt:
-  #       name: python3-requests
-  #       state: present
+    - name: Create /etc/nginx.conf file
+      template:
+        src: /srv/ansible/playbook-k3s/j2/nginx.conf.j2
+        dest: /etc/nginx.conf
 
     - name: Run Nginx Docker container
       docker_container:
@@ -90,11 +88,7 @@
         volumes:
           - "/etc/nginx.conf:/etc/nginx/nginx.conf"
 
-    - name: Create /etc/nginx.conf file
-      template:
-        src: /srv/ansible/playbook/j2/nginx.conf.j2
-        dest: /etc/nginx.conf
-      notify: Restart Docker
+
 
   handlers:
     - name: Restart Docker
