@@ -64,9 +64,10 @@ $outputPath = $DVDalpine
 $url = "https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/x86_64/alpine-standard-3.18.4-x86_64.iso"
 $DVDalpine=Join-Path $isofolder (Split-Path $url -Leaf) # extracts filename from downloadurl
 
+
 # download if file does not already exist
 if (!(Test-Path -Path "$DVDalpine")) {
-        Invoke-WebRequest -Uri $url -OutFile $outputPath
+        Invoke-WebRequest -Uri $url -UseBasicParsing -OutFile $outputPath
     }
 
 
@@ -77,7 +78,7 @@ $DVDUBUNTU = Join-Path $isofolder (Split-Path $url -Leaf) # extracts filename fr
 
 # download if file does not already exist
 if (!(Test-Path -Path "$DVDUBUNTU")) {
-        Invoke-WebRequest -Uri $url -OutFile $outputPath
+        Invoke-WebRequest -Uri $url -UseBasicParsing -OutFile $outputPath
     }
 
 ## change the name to the switch that has access to the internet.
