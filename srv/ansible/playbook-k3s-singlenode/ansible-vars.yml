@@ -1,0 +1,10 @@
+# vars.yml
+k3s_version: "v1.24.6+k3s1"
+
+k3s_installation_script_single: |
+  curl -sfL https://get.k3s.io | \
+  INSTALL_K3S_VERSION="{{ k3s_version }}" \
+  sh -s - \
+  --write-kubeconfig-mode 644 \
+  --tls-san "{{ groups['single'][0] }}" \
+  --disable "traefik" 
